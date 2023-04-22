@@ -72,3 +72,15 @@ class History(models.Model):
     message=models.CharField(max_length=255)
     p=models.ForeignKey(AddItem,on_delete=models.CASCADE)
 
+class RetainerInvoice(models.Model):
+    customer_name=models.CharField(max_length=255)
+    retainer_invoice_number=models.CharField(max_length=255)
+    refrences=models.CharField(max_length=255)
+    retainer_invoice_date=models.DateField()
+    description=models.TextField()
+    amount=models.DecimalField(max_digits=10,decimal_places=2)
+    total_amount=models.DecimalField(max_digits=10,decimal_places=2)
+    customer_notes=models.TextField()
+    terms_and_conditions=models.TextField
+    is_draft=models.BooleanField(default=True)
+    is_sent=models.BooleanField(default=False)

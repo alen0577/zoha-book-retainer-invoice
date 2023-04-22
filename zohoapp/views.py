@@ -346,3 +346,11 @@ def add_sales(request):
         return redirect('additem')
     return render(request,'additem.html')
 
+# view functions for retainer invoice
+
+@login_required(login_url='login')
+def retainer_invoice(request):
+    invoices=RetainerInvoice.objects.all()
+    context={'invoices':invoices}
+    return render(request,'retainer_invoice.html',context)
+
