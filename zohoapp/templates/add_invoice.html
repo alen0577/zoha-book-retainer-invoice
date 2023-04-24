@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+
+<section>
+
+    <div class="row fixed-top  " style="top: 7rem; margin-left: 18rem;" >
+
+        <div class="col-md-10 " style=" position: fixed;"><br>
+
+            
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="align-text-top" style="font-size: 35px;" >New Retainer Invoice</h3>
+                </div>
+            </div><br><br>
+            <div class="row">
+                <div class="col-7">
+
+
+
+                    <form>
+                        <div class="row mb-3">
+                          <label  class="col-sm-4 col-form-label">Customer Name*</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control" name="customername" required>
+                          </div>
+                        </div><br>
+                        <div class="row mb-3">
+                          <label  class="col-sm-4 col-form-label">Retainer Invoice Number*</label>
+                          <div class="col-sm-6">
+                            <input type="text" class="form-control" name="invoicenumber" required>
+                          </div>
+                        </div><br>
+                        <div class="row mb-3">
+                            <label  class="col-sm-4 col-form-label">Reference</label>
+                            <div class="col-sm-6">
+                              <input type="text" class="form-control" name="reference">
+                            </div>
+                          </div><br>
+                          <div class="row mb-3">
+                            <label  class="col-sm-4 col-form-label">Retainer Invoice Date*</label>
+                            <div class="col-sm-6">
+                              <input type="date" class="form-control" name="invoicedate" id="dateField">
+                            </div>
+                          </div><br>
+                          <div class="row">
+                            <div class="col-10">
+                              <div id="items">
+                                <div class="item">
+                                  <input type="text" name="description[]" placeholder="Description">
+                                  <input type="number" name="amount[]" placeholder="Amount">
+                                  <a class="remove-item"><i class="fa-solid fa-delete "></i>Remove</a>
+                                </div>
+                              </div>
+                              <a href="#" id="add-item"><i class="fa-solid fa-plus "></i> Add another line</a>
+  
+                            </div>
+                            <div class="col-2"></div>
+
+
+                          </div><br>
+
+  
+  
+
+
+
+
+                      </form>
+
+                </div>
+                <div class="col-5"></div>
+            </div>
+            
+        
+        
+
+
+
+
+
+
+        
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+  document.getElementById('dateField').valueAsDate = new Date();
+</script>
+<script>
+  const addItemButton = document.getElementById('add-item');
+  const itemsDiv = document.getElementById('items');
+
+  addItemButton.addEventListener('click', () => {
+    const newItem = document.createElement('div');
+    newItem.classList.add('item');
+    newItem.innerHTML = `
+      <input type="text" name="description[]" placeholder="Description">
+      <input type="number" name="amount[]" placeholder="Amount">
+      <button class="remove-item">Remove</button>
+    `;
+    itemsDiv.appendChild(newItem);
+  });
+
+  itemsDiv.addEventListener('click', (event) => {
+    if (event.target.classList.contains('remove-item')) {
+      event.target.parentElement.remove();
+    }
+  });
+</script>
+
+
+
+
+
+
+
+
+{% endblock %}

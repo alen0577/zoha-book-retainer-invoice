@@ -354,3 +354,11 @@ def retainer_invoice(request):
     context={'invoices':invoices}
     return render(request,'retainer_invoice.html',context)
 
+
+
+@login_required(login_url='login')
+def add_invoice(request):
+
+
+    return render(request,'add_invoice.html')
+
