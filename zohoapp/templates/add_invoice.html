@@ -7,9 +7,9 @@
 
 <section>
 
-    <div class="row fixed-top  " style="top: 7rem; margin-left: 18rem;" >
+    <div class="row fixed-sticky " style="top: 7rem; margin-left: 18rem;" >
 
-        <div class="col-md-10 " style=" position: fixed;"><br>
+        <div class="col-md" style=" position:sticky;"><br>
 
             
             <div class="row">
@@ -47,27 +47,58 @@
                               <input type="date" class="form-control" name="invoicedate" id="dateField">
                             </div>
                           </div><br>
+
                           <div class="row">
-                            <div class="col-10">
-                              <div id="items">
-                                <div class="item">
-                                  <input type="text" name="description[]" placeholder="Description">
-                                  <input type="number" name="amount[]" placeholder="Amount">
-                                  <a class="remove-item"><i class="fa-solid fa-delete "></i>Remove</a>
-                                </div>
-                              </div>
-                              <a href="#" id="add-item"><i class="fa-solid fa-plus "></i> Add another line</a>
-  
+                            <div class="col-10 ">
+
+                              <table class="align-top">
+                                <thead>
+                                  <tr>
+                                    <th class="text-white align-middle">Description</th>
+                                    <th class="text-white align-middle">Amount</th>
+                                    <th></th>
+                                  </tr>
+                                </thead>
+                                <tbody id="lines">
+                                  <tr id="line1">
+                                    <td><input type="text" style="width: 450px;" name="description1" placeholder="Enter description"></td>
+                                    <td><input type="text" style="width: 150px;" name="amount1" placeholder="Enter amount" onchange="updateTotal()"></td>
+                                    <td></td>
+                                  </tr>
+                                </tbody>
+                                <tfoot>
+                                  <tr><br>
+                                    <td colspan="2"><a href="#" id="add-line"><i class="fa-solid fa-plus "></i> Add another line</a></td>
+                                    <td class="text-white">Total: <span id="total">0.00/-</span></td>
+                                  </tr>
+                                </tfoot>
+                              </table>
+                              
+
                             </div>
                             <div class="col-2"></div>
 
+                          </div><br><br>
 
-                          </div><br>
+                          <div class="mb-3">
+                            <label for="formGroupExampleInput" class="form-label">Customer Notes</label>
+                            <div class="form-floating">
+                              <textarea class="form-control col-8" placeholder="Enter any notes to be displayed in your transaction" id="floatingTextarea"></textarea>
+                            
+                            </div>
+                          </div>
 
-  
-  
+
+                          <div class="mb-3">
+                            <label for="formGroupExampleInput" class="form-label">Terms and Conditions</label>
+                            <div class="form-floating">
+                              <textarea class="form-control col-12" placeholder="Enter the terms and conditions of your business to be displayed in your transactions " id="floatingTextarea"></textarea>
+                              
+                            </div>
+                          </div>
 
 
+                          
 
 
                       </form>
@@ -94,27 +125,36 @@
 <script>
   document.getElementById('dateField').valueAsDate = new Date();
 </script>
-<script>
-  const addItemButton = document.getElementById('add-item');
-  const itemsDiv = document.getElementById('items');
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  addItemButton.addEventListener('click', () => {
-    const newItem = document.createElement('div');
-    newItem.classList.add('item');
-    newItem.innerHTML = `
-      <input type="text" name="description[]" placeholder="Description">
-      <input type="number" name="amount[]" placeholder="Amount">
-      <button class="remove-item">Remove</button>
-    `;
-    itemsDiv.appendChild(newItem);
-  });
-
-  itemsDiv.addEventListener('click', (event) => {
-    if (event.target.classList.contains('remove-item')) {
-      event.target.parentElement.remove();
-    }
-  });
-</script>
+	<script>
+		$(document).ready(function() {
+			var line = 1;
+			
+			$('#add-line').click(function() {
+				line++;
+				var html = '<tr id="line'+line+'">';
+				html += '<td><input type="text"  style="width: 450px;"  name="description'+line+'" placeholder="Enter description"></td>';
+				html += '<td><input type="text"  style="width: 150px;" name="amount'+line+'" placeholder="Enter amount" onchange="updateTotal()"></td>';
+				html += '<td><a href="#"  onclick="deleteLine('+line+')" style="color:red"> -X-</a></td>';
+				html += '</tr>';
+				$('#lines').append(html);
+			});
+			
+			window.updateTotal = function() {
+				var total = 0;
+				$('input[name^="amount"]').each(function() {
+					total += parseFloat($(this).val());
+				});
+				$('#total').text(total.toFixed(2));
+			}
+			
+			window.deleteLine = function(line) {
+				$('#line'+line).remove();
+				updateTotal();
+			}
+		});
+	</script>
 
 
 
