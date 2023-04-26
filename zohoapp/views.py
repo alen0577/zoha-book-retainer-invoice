@@ -349,6 +349,17 @@ def add_sales(request):
 # view functions for retainer invoice
 
 @login_required(login_url='login')
+def add_customer(request):
+    if request.method=='POST':
+        customer_name=request.POST['name']
+        address=request.POST['address']
+        customer=Customer(customer_name=customer_name,customer_address=address)
+        customer.save()
+        return redirect('add_invoice')
+    return render(request,'add_customer.html')
+
+
+@login_required(login_url='login')
 def retainer_invoice(request):
     invoices=RetainerInvoice.objects.all()
     context={'invoices':invoices}
@@ -358,7 +369,14 @@ def retainer_invoice(request):
 
 @login_required(login_url='login')
 def add_invoice(request):
+    customer=Customer.objects.all()
+    context={'customer':customer}
+
+    return render(request,'add_invoice.html',context)
 
 
-    return render(request,'add_invoice.html')
-
+@login_required(login_url='login')
+def invoice_view(request):
+    invoices=RetainerInvoice.objects.all()
+    context={'invoices':invoices}
+    return render(request,'invoice_view.html',context)

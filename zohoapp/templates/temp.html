@@ -11,7 +11,7 @@
 
         <div class="col-md-10">
 
-          <div style="height: 640px;width: 1215px;overflow-y: scroll;"> 
+            
             <div class="row">
                 <div class="col-12">
                     <h3 class="align-text-top" style="font-size: 35px;" >New Retainer Invoice</h3>
@@ -25,29 +25,14 @@
                     <form>
                         <div class="row mb-3">
                           <label  class="col-sm-4 col-form-label">Customer Name*</label>
-                          
                           <div class="col-sm-8">
-                            
-                            <select class="form-control" name="select" onchange="if (this.value === 'new') window.location.href = '/add_customer/';">
-                              
-                              
-                              <option value="">Select  Customer</option>
-                              {% for i in customer %}
-                              <option value="{{i.id}}">{{i.customer_name}}</option>
-                              {% endfor %}         
-                              <option value="new" style="color: blue;">+ New Customer</option>
-                              
-                              
-                            </select>
-                            
-
+                            <input type="text" class="form-control" name="customername" required>
                           </div>
-                          
                         </div><br>
                         <div class="row mb-3">
                           <label  class="col-sm-4 col-form-label">Retainer Invoice Number*</label>
                           <div class="col-sm-6">
-                            <input type="text" class="form-control" name="retainer-invoice-number" id="invoice-number">
+                            <input type="text" class="form-control" name="invoicenumber" required>
                           </div>
                         </div><br>
                         <div class="row mb-3">
@@ -66,7 +51,7 @@
                           <div class="row">
                             <div class="col-10 ">
 
-                              <table class="table-borderless align-top">
+                              <table class="align-top">
                                 <thead>
                                   <tr>
                                     <th class="text-white align-middle">Description</th>
@@ -84,7 +69,7 @@
                                 <tfoot>
                                   <tr><br>
                                     <td colspan="2"><a href="#" id="add-line"><i class="fa-solid fa-plus "></i> Add another line</a></td>
-                                    <td class="text-white">Total: <span id="total">0.00</span></td>
+                                    <td class="text-white">Total: <span id="total">0.00/-</span></td>
                                   </tr>
                                 </tfoot>
                               </table>
@@ -116,7 +101,7 @@
                             <button class="btn btn-primary" type="button">Save as Draft</button>
                             <button class="btn btn-primary" type="button">Save and Send</button>
                             <button class="btn btn-primary" type="button">Cancel</button>
-                          </div><br>
+                          </div>
 
 
                           
@@ -127,7 +112,7 @@
                 </div>
                 <div class="col-5"></div>
             </div>
-          </div> 
+            
         
         
 
@@ -168,21 +153,6 @@
       $('#line'+line).remove();
       updateTotal();
     }
-  });
-</script>
-<script>
-  // Get the current invoice number from the server (e.g. using an AJAX request)
-  let currentInvoiceNumber = 1;
-
-  // Set the initial value of the invoice number field
-  document.getElementById('invoice-number').value = 'RET-' + currentInvoiceNumber.toString().padStart(5, '0');
-
-  // Increment the invoice number after each submission
-  document.querySelector('form').addEventListener('submit', (event) => {
-    event.preventDefault();
-    currentInvoiceNumber++;
-    document.getElementById('invoice-number').value = 'RET-' + currentInvoiceNumber.toString().padStart(5, '0');
-    // Submit the form to the server here
   });
 </script>
 

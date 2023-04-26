@@ -20,7 +20,10 @@ urlpatterns = [
     path('cleer/<int:id>',views.cleer,name='cleer'),
     path('add_unit',views.add_unit,name='add_unit'),
     path('sales',views.add_sales,name='add_sales'),
+    path('add_customer/',views.add_customer,name='add_customer'),
     path('retainer_invoices/',views.retainer_invoice,name='retainer_invoice'),
-    path('add_invoice/',views.add_invoice,name='add_invoice')
+    path('add_invoice/',views.add_invoice,name='add_invoice'),
+    path('view_invoice/',views.invoice_view,name='invoice_view'),
+    
     
 ]

@@ -72,8 +72,13 @@ class History(models.Model):
     message=models.CharField(max_length=255)
     p=models.ForeignKey(AddItem,on_delete=models.CASCADE)
 
-class RetainerInvoice(models.Model):
+
+class Customer(models.Model):
     customer_name=models.CharField(max_length=255)
+    customer_address=models.TextField() 
+
+class RetainerInvoice(models.Model):
+    customer_name=models.ForeignKey(Customer,on_delete=models.CASCADE)
     retainer_invoice_number=models.CharField(max_length=255)
     refrences=models.CharField(max_length=255)
     retainer_invoice_date=models.DateField()

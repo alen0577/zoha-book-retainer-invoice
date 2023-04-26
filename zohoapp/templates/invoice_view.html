@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section>
+
+    <div class="row fixed-top  " style="top: 7rem; margin-left: 18rem;" >
+
+        <div class="col-md-12">
+
+
+            <div style="height: 640px;width: 1215px;overflow-y: scroll;">
+                
+                
+                <div class="row">
+
+
+                    <div class="col-4" >
+                        <section style="border-right: 1px solid;border-color: white;">
+                            <div class="row">
+
+                                <div class="col-6">
+                                    <h3 style="font-size:large;">All Retainer Invoices</h3>
+                                </div>
+                
+                                <div class="col-1"></div>
+                
+                                <div class="col-4">
+                                    <a href="{% url 'add_invoice' %}"><button class="btn btn-success" style="height: 35px;width: 100px;"><i class="fa-solid fa-plus "></i> New</button></a>
+                
+                                </div>
+        
+                
+                            </div><br>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            {% for i in invoices %}
+                                            <tr>
+                                                <td>
+                                                    <p>{{i.customer_name.customer_name}} <br>
+                                                    <a href="">{{i.retainer_invoice_number}}</a> | {{i.retainer_invoice_date}}
+                                                    </p>
+                                                    
+                                                </td>
+                                                <td><p>₹{{i.total_amount}}</p></td>
+                                            </tr>
+                                            {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </section>
+
+
+                        
+                    </div>
+    
+    
+    
+                    <div class="col-8">
+
+                        <section>
+
+                            <div class="row">
+                                <div class="col-4">
+                                    <h3>RET-00001</h3>
+                                </div>
+                                <div class="col-8"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <a href="#" id="add-comment-link">Add Comment</a>
+                                    <form id="comment-form" style="display:none;">
+                                        <textarea name="comment"></textarea><br>
+                                        <button type="submit">Submit</button>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                        </section>
+
+    
+                    </div>
+    
+    
+                </div>
+    
+
+
+            
+            </div>
+
+        
+        </div>
+    
+    </div>
+
+</section>
+
+
+
+<script>
+    // JavaScript code
+const addCommentLink = document.getElementById('add-comment-link');
+const commentForm = document.getElementById('comment-form');
+
+addCommentLink.addEventListener('click', function(event) {
+  event.preventDefault(); // prevent default link behavior
+  addCommentLink.style.display = 'none'; // hide the "add comment" link
+  commentForm.style.display = 'block'; // show the comment form
+});
+</script>
+
+
+{% endblock %}
