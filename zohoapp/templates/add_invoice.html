@@ -11,7 +11,7 @@
 
         <div class="col-md-10">
 
-          <div style="height: 640px;width: 1215px;overflow-y: scroll;"> 
+          <div style="height: 650px;width: 1215px;overflow-y: scroll;"> 
             <div class="row">
                 <div class="col-12">
                     <h3 class="align-text-top" style="font-size: 35px;" >New Retainer Invoice</h3>
@@ -22,107 +22,108 @@
 
 
 
-                    <form>
-                        <div class="row mb-3">
-                          <label  class="col-sm-4 col-form-label">Customer Name*</label>
+                    <form  action="{% url 'add_invoice' %}" method="post">
+                      {% csrf_token %}
+                      <div class="row mb-3">
+                        <label  class="col-sm-4 col-form-label">Customer Name*</label>
+                        
+                        <div class="col-sm-8">
                           
-                          <div class="col-sm-8">
+                          <select class="form-control form-select" name="select" onchange="if (this.value === 'new') window.location.href = '/add_customer/';">
                             
-                            <select class="form-control" name="select" onchange="if (this.value === 'new') window.location.href = '/add_customer/';">
-                              
-                              
-                              <option value="">Select  Customer</option>
-                              {% for i in customer %}
-                              <option value="{{i.id}}">{{i.customer_name}}</option>
-                              {% endfor %}         
-                              <option value="new" style="color: blue;">+ New Customer</option>
-                              
-                              
-                            </select>
                             
+                            <option value="">Select  Customer</option>
+                            {% for i in customer %}
+                            <option value="{{i.id}}">{{i.customer_name}}</option>
+                            {% endfor %}         
+                            <option value="new" style="color: blue;">+ New Customer</option>
+                            
+                            
+                          </select>
+                          
 
-                          </div>
-                          
-                        </div><br>
-                        <div class="row mb-3">
-                          <label  class="col-sm-4 col-form-label">Retainer Invoice Number*</label>
+                        </div>
+                        
+                      </div><br>
+                      <div class="row mb-3">
+                        <label  class="col-sm-4 col-form-label">Retainer Invoice Number*</label>
+                        <div class="col-sm-6">
+                          <input type="text" class="form-control" name="retainer-invoice-number" id="invoice-number">
+                        </div>
+                      </div><br>
+                      <div class="row mb-3">
+                          <label  class="col-sm-4 col-form-label">Reference</label>
                           <div class="col-sm-6">
-                            <input type="text" class="form-control" name="retainer-invoice-number" id="invoice-number">
+                            <input type="text" class="form-control" name="reference">
                           </div>
                         </div><br>
                         <div class="row mb-3">
-                            <label  class="col-sm-4 col-form-label">Reference</label>
-                            <div class="col-sm-6">
-                              <input type="text" class="form-control" name="reference">
-                            </div>
-                          </div><br>
-                          <div class="row mb-3">
-                            <label  class="col-sm-4 col-form-label">Retainer Invoice Date*</label>
-                            <div class="col-sm-6">
-                              <input type="date" class="form-control" name="invoicedate" id="dateField">
-                            </div>
-                          </div><br>
+                          <label  class="col-sm-4 col-form-label">Retainer Invoice Date*</label>
+                          <div class="col-sm-6">
+                            <input type="date" class="form-control" name="invoicedate" id="dateField">
+                          </div>
+                        </div><br>
 
-                          <div class="row">
-                            <div class="col-10 ">
+                        <div class="row">
+                          <div class="col-10 ">
 
-                              <table class="table-borderless align-top">
-                                <thead>
-                                  <tr>
-                                    <th class="text-white align-middle">Description</th>
-                                    <th class="text-white align-middle">Amount</th>
-                                    <th></th>
-                                  </tr>
-                                </thead>
-                                <tbody id="lines">
-                                  <tr id="line1">
-                                    <td><input style="width: 340px;" type="text" name="description1" placeholder="Enter description"></td>
-					                          <td><input type="number" name="amount1" placeholder="Enter amount" onchange="updateTotal()"></td>
-                                    <td></td>
-                                  </tr>
-                                </tbody>
-                                <tfoot>
-                                  <tr><br>
-                                    <td colspan="2"><a href="#" id="add-line"><i class="fa-solid fa-plus "></i> Add another line</a></td>
-                                    <td class="text-white">Total: <span id="total">0.00</span></td>
-                                  </tr>
-                                </tfoot>
-                              </table>
-                              
-
-                            </div>
-                            <div class="col-2"></div>
-
-                          </div><br><br>
-
-                          <div class="mb-3">
-                            <label for="formGroupExampleInput" class="form-label">Customer Notes</label>
-                            <div class="form-floating">
-                              <textarea class="form-control col-8" placeholder="Enter any notes to be displayed in your transaction" id="floatingTextarea"></textarea>
+                            <table class="order-list">
+                              <thead>
+                                <tr>
+                                  <th class="text-white">Description</th>
+                                  <th class="text-white">Amount</th>
+                                  <th></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td><input type="text"  style="width: 340px;" name="description0"/></td>
+                                  <td><input type="number" name="amount0" min="0"/></td>
+                                  <td></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <a id="addrow" href="#">Add another line</a>
+                            <br/><br/>
+                            <div class="text-white">Total: $<span id="total">0.00</span></div>
+                            <br/><br/>
                             
-                            </div>
-                          </div><br><br>
+
+                          </div>
+                          <div class="col-2"></div>
+
+                        </div><br><br>
+
+                        <div class="mb-3">
+                          <label for="formGroupExampleInput" class="form-label">Customer Notes</label>
+                          <div class="form-floating">
+                            <textarea class="form-control col-8" name="customer_notes" placeholder="Enter any notes to be displayed in your transaction" id="floatingTextarea"></textarea>
+                          
+                          </div>
+                        </div><br><br>
 
 
-                          <div class="mb-3">
-                            <label for="formGroupExampleInput" class="form-label">Terms and Conditions</label>
-                            <div class="form-floating">
-                              <textarea class="form-control col-12" placeholder="Enter the terms and conditions of your business to be displayed in your transactions " id="floatingTextarea"></textarea>
-                              
-                            </div>
-                          </div><br><br>
+                        <div class="mb-3">
+                          <label for="formGroupExampleInput" class="form-label">Terms and Conditions</label>
+                          <div class="form-floating">
+                            <textarea class="form-control col-12" name="terms" placeholder="Enter the terms and conditions of your business to be displayed in your transactions " id="floatingTextarea"></textarea>
+                            
+                          </div>
+                        </div><br><br>
 
-                          <div class="d-grid gap-2 d-md-block">
-                            <button class="btn btn-primary" type="button">Save as Draft</button>
-                            <button class="btn btn-primary" type="button">Save and Send</button>
-                            <button class="btn btn-primary" type="button">Cancel</button>
-                          </div><br>
+                        
+                          <!-- <button class="btn btn-primary" type="button" name="action" value="draft">Save as Draft</button> -->
+                          <input type="submit" value="save">
+                          <button class="btn btn-primary" type="button" onclick="cancel()" value="cancel">Cancel</button><br><br>
+                        
+
+                        
 
 
                           
 
 
-                      </form>
+                    </form>
 
                 </div>
                 <div class="col-5"></div>
@@ -144,29 +145,35 @@
 
 <script>
   $(document).ready(function() {
-    var line = 1;
-    
-    $('#add-line').click(function() {
-      line++;
-      var html = '<tr id="line'+line+'">';
-      html += '<td><input style="width: 340px;" type="text" name="description'+line+'" placeholder="Enter description"></td>';
-      html += '<td><input type="number" name="amount'+line+'" placeholder="Enter amount" onchange="updateTotal()"></td>';
-      html += '<td><a href="#" onclick="deleteLine('+line+')" style="color:red">-X-</a></td>';
-      html += '</tr>';
-      $('#lines').append(html);
+    var counter = 1;
+    var totalAmount = 0;
+    $("#addrow").on("click", function() {
+      var newRow = $("<tr>");
+      var cols = "";
+      cols += '<td><input type="text"  style="width: 340px;" name="description' + counter + '"/></td>';
+      cols += '<td><input type="number" name="amount' + counter + '" min="0"/></td>';
+      cols += '<td><a class="deleteRow" style="color:red;">-X-</a></td>';
+      newRow.append(cols);
+      $("table.order-list").append(newRow);
+      counter++;
     });
     
-    window.updateTotal = function() {
-      var total = 0;
-      $('input[name^="amount"]').each(function() {
-        total += parseFloat($(this).val());
-      });
-      $('#total').text(total.toFixed(2));
-    }
-    
-    window.deleteLine = function(line) {
-      $('#line'+line).remove();
+    $("table.order-list").on("change", "input[name^='amount']", function(event) {
       updateTotal();
+    });
+    
+    $("table.order-list").on("click", "a.deleteRow", function(event) {
+      $(this).closest("tr").remove();
+      updateTotal();
+    });
+    
+    function updateTotal() {
+      var total = 0;
+      $("table.order-list").find("input[name^='amount']").each(function() {
+        total += parseInt($(this).val()) || 0;
+      });
+      totalAmount = total;
+      $("#total").html(totalAmount.toFixed(2));
     }
   });
 </script>
@@ -184,6 +191,11 @@
     document.getElementById('invoice-number').value = 'RET-' + currentInvoiceNumber.toString().padStart(5, '0');
     // Submit the form to the server here
   });
+</script>
+<script>
+  function cancel() {
+    window.location.href = "{% url 'base' %}";
+  }
 </script>
 
 

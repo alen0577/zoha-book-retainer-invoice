@@ -371,7 +371,8 @@ def retainer_invoice(request):
 def add_invoice(request):
     customer=Customer.objects.all()
     context={'customer':customer}
-
+    print('saved1')
+     
     return render(request,'add_invoice.html',context)
 
 

@@ -11,7 +11,7 @@
 
         <div class="col-md-10">
 
-            
+          <div style="height: 640px;width: 1215px;overflow-y: scroll;"> 
             <div class="row">
                 <div class="col-12">
                     <h3 class="align-text-top" style="font-size: 35px;" >New Retainer Invoice</h3>
@@ -22,17 +22,33 @@
 
 
 
-                    <form>
+                    <form method="post" action="{% url 'add_invoice' %}">
+                      {% csrf_token %}
                         <div class="row mb-3">
                           <label  class="col-sm-4 col-form-label">Customer Name*</label>
+                          
                           <div class="col-sm-8">
-                            <input type="text" class="form-control" name="customername" required>
+                            
+                            <select class="form-control" name="select" onchange="if (this.value === 'new') window.location.href = '/add_customer/';">
+                              
+                              
+                              <option value="">Select  Customer</option>
+                              {% for i in customer %}
+                              <option value="{{i.id}}">{{i.customer_name}}</option>
+                              {% endfor %}         
+                              <option value="new" style="color: blue;">+ New Customer</option>
+                              
+                              
+                            </select>
+                            
+
                           </div>
+                          
                         </div><br>
                         <div class="row mb-3">
                           <label  class="col-sm-4 col-form-label">Retainer Invoice Number*</label>
                           <div class="col-sm-6">
-                            <input type="text" class="form-control" name="invoicenumber" required>
+                            <input type="text" class="form-control" name="retainer-invoice-number" id="invoice-number">
                           </div>
                         </div><br>
                         <div class="row mb-3">
@@ -51,7 +67,7 @@
                           <div class="row">
                             <div class="col-10 ">
 
-                              <table class="align-top">
+                              <table class="table-borderless align-top">
                                 <thead>
                                   <tr>
                                     <th class="text-white align-middle">Description</th>
@@ -69,7 +85,8 @@
                                 <tfoot>
                                   <tr><br>
                                     <td colspan="2"><a href="#" id="add-line"><i class="fa-solid fa-plus "></i> Add another line</a></td>
-                                    <td class="text-white">Total: <span id="total">0.00/-</span></td>
+                                    <td class="text-white">Total: <span id="total">0.00</span></td>
+                                    
                                   </tr>
                                 </tfoot>
                               </table>
@@ -83,7 +100,7 @@
                           <div class="mb-3">
                             <label for="formGroupExampleInput" class="form-label">Customer Notes</label>
                             <div class="form-floating">
-                              <textarea class="form-control col-8" placeholder="Enter any notes to be displayed in your transaction" id="floatingTextarea"></textarea>
+                              <textarea class="form-control col-8" name="customer_notes" placeholder="Enter any notes to be displayed in your transaction" id="floatingTextarea"></textarea>
                             
                             </div>
                           </div><br><br>
@@ -92,16 +109,16 @@
                           <div class="mb-3">
                             <label for="formGroupExampleInput" class="form-label">Terms and Conditions</label>
                             <div class="form-floating">
-                              <textarea class="form-control col-12" placeholder="Enter the terms and conditions of your business to be displayed in your transactions " id="floatingTextarea"></textarea>
+                              <textarea class="form-control col-12" name="terms" placeholder="Enter the terms and conditions of your business to be displayed in your transactions " id="floatingTextarea"></textarea>
                               
                             </div>
                           </div><br><br>
 
                           <div class="d-grid gap-2 d-md-block">
-                            <button class="btn btn-primary" type="button">Save as Draft</button>
-                            <button class="btn btn-primary" type="button">Save and Send</button>
-                            <button class="btn btn-primary" type="button">Cancel</button>
-                          </div>
+                            <button class="btn btn-primary" type="button" name="action" value="save_draft">Save as Draft</button>
+                            <button class="btn btn-primary" type="button" name="action" value="save_sent">Save and Send</button>
+                            <button class="btn btn-primary" type="button" name="action" value="cancel">Cancel</button>
+                          </div><br>
 
 
                           
@@ -112,7 +129,7 @@
                 </div>
                 <div class="col-5"></div>
             </div>
-            
+          </div> 
         
         
 
@@ -155,6 +172,21 @@
     }
   });
 </script>
+<script>
+  // Get the current invoice number from the server (e.g. using an AJAX request)
+  let currentInvoiceNumber = 1;
+
+  // Set the initial value of the invoice number field
+  document.getElementById('invoice-number').value = 'RET-' + currentInvoiceNumber.toString().padStart(5, '0');
+
+  // Increment the invoice number after each submission
+  document.querySelector('form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    currentInvoiceNumber++;
+    document.getElementById('invoice-number').value = 'RET-' + currentInvoiceNumber.toString().padStart(5, '0');
+    // Submit the form to the server here
+  });
+</script>
 
 
 
@@ -163,3 +195,30 @@
 
 
 {% endblock %}
+
+
+
+<!-- if request.user.is_authenticated:
+        if request.method=='POST':
+            select=request.POST['select']
+            customer_name=Customer.objects.get(id=select)
+            retainer_invoice_number=request.POST['retainer-invoice-number']
+            reference=request.POST['reference']
+            retainer_invoice_date=request.POST['invoicedate']
+            for i in range(len(request.POST.getlist('description'))):
+                description = request.POST.get('description{}'.format(i))
+                amount = request.POST.get('amount{}'.format(i))
+            total_amount=int(request.POST.get('total'))
+            customer_notes=request.POST['customer_notes']
+            terms_and_conditions=request.POST['terms']
+            action=request.POST['action']
+
+            retainer_invoice=RetainerInvoice(
+                customer_name=customer_name,retainer_invoice_number=retainer_invoice_number,reference=reference,
+                retainer_invoice_date=retainer_invoice_date,description=description,amount=amount,
+                total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions
+
+            )
+            retainer_invoice.save()
+            print('saved')
+            return redirect('view_invoice')   -->

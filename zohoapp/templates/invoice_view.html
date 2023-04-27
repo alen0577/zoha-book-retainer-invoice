@@ -16,10 +16,10 @@
 
 
                     <div class="col-4" >
-                        <section style="border-right: 1px solid;border-color: white;">
+                        <section >
                             <div class="row">
 
-                                <div class="col-6">
+                                <div class="col-7">
                                     <h3 style="font-size:large;">All Retainer Invoices</h3>
                                 </div>
                 
@@ -60,25 +60,96 @@
     
     
     
-                    <div class="col-8">
+                    <div class="col-8" style="border: 1px solid;border-color: white; height: 640px;">
 
                         <section>
 
                             <div class="row">
-                                <div class="col-4">
+                                <div class="col-4"><br>
                                     <h3>RET-00001</h3>
                                 </div>
-                                <div class="col-8"></div>
+                                <div class="col-8"><br>
+                                    <div class="button-group">
+                                        <button class="edit-button">
+                                          <i class="fas fa-edit"></i>
+                                          Edit
+                                        </button>
+                                        <button class="pdf-button">
+                                          <i class="fas fa-file-pdf"></i>
+                                          PDF
+                                        </button>
+                                        <button class="print-button">
+                                          <i class="fas fa-print"></i>
+                                          Print
+                                        </button>
+                                        <button class="mail-button">
+                                          <i class="fas fa-envelope"></i>
+                                          Mail
+                                        </button>
+                                        <button class="attach-button">
+                                          <i class="fas fa-paperclip"></i>
+                                          Attach
+                                        </button>
+                                        <button class="close-button">
+                                          <i class="fa fa-close"></i>
+                                          Close
+                                        </button>
+                                      </div>
+                                      
+                                </div>
                             </div>
                             <div class="row">
-                                <div class="col-12">
-                                    <a href="#" id="add-comment-link">Add Comment</a>
+                                <div class="col-12"><br><br>
+                                    <a href="#" id="add-comment-link"><i class="fa-solid fa-plus "></i> Add Comment</a>
                                     <form id="comment-form" style="display:none;">
-                                        <textarea name="comment"></textarea><br>
-                                        <button type="submit">Submit</button>
+                                        <textarea rows="2" cols="80" name="comment"></textarea><br>
+                                        <button class="btn btn-primary" type="submit">Add comment</button>
                                     </form>
 
                                 </div>
+                            </div><br><br><br>
+                            <div class="row">
+                                <div class="col-2"></div>
+                                <div class="col-9 container border" style="background-color: rgb(79, 78, 78);" ><br><br>
+
+                                    <div class="invoice-header">
+                                        <h1>RETAINER INVOICE</h1>
+                                        <p>Date: 16/12/2002</p>
+                                        
+                                    </div><br>
+                                    <div class="details">
+                                        <p style="text-align: end;color: white;">Retainer Invoice Number:RET-00001</p>
+                                        <p style="color: white;">Bill To</p>
+                                        <p style="color: white;">Customer Name</p>
+                                        <p style="color: white;">Address</p>
+                                        
+                                    </div><br>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Description</th>
+                                                <th style="text-align: end;">Amount</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td>Description1</td>
+                                                <td style="text-align: end;">₹1500</td>
+                                                
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="invoice-footer">
+                                        <p>Total: <span class="invoice-total">₹1500/-</span></p>
+                                    </div>
+
+
+
+                                </div>
+                                <div class="col-1"></div>
                             </div>
 
                         </section>
@@ -114,6 +185,80 @@ addCommentLink.addEventListener('click', function(event) {
   commentForm.style.display = 'block'; // show the comment form
 });
 </script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        color: white;
+    }
+    th {
+        background-color: #f2f2f2;
+        color: black;
+    }
+    .invoice-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        
+    }
+    .invoice-header h1 {
+        margin: 0;
+        font-size: 35px;
+        
+    }
+    .invoice-header p {
+        margin: 0;
+        font-size: 14px;
+        color: #ffffff;
+    }
+    .invoice-footer {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    .invoice-footer p {
+        margin: 0;
+        font-size: 14px;
+        color: #ffffff;
+    }
+    .invoice-total {
+        font-weight: bold;
+    }
+</style>
+<style>
+.button-group {
+  display: flex;
+  align-items: center;
+}
+
+.button-group button {
+  border: none;
+  background-color: #fff;
+  margin-right: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.button-group button i {
+  margin-right: 5px;
+}
+
+</style>
+
 
 
 {% endblock %}
