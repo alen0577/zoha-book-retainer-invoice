@@ -198,27 +198,3 @@
 
 
 
-<!-- if request.user.is_authenticated:
-        if request.method=='POST':
-            select=request.POST['select']
-            customer_name=Customer.objects.get(id=select)
-            retainer_invoice_number=request.POST['retainer-invoice-number']
-            reference=request.POST['reference']
-            retainer_invoice_date=request.POST['invoicedate']
-            for i in range(len(request.POST.getlist('description'))):
-                description = request.POST.get('description{}'.format(i))
-                amount = request.POST.get('amount{}'.format(i))
-            total_amount=int(request.POST.get('total'))
-            customer_notes=request.POST['customer_notes']
-            terms_and_conditions=request.POST['terms']
-            action=request.POST['action']
-
-            retainer_invoice=RetainerInvoice(
-                customer_name=customer_name,retainer_invoice_number=retainer_invoice_number,reference=reference,
-                retainer_invoice_date=retainer_invoice_date,description=description,amount=amount,
-                total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions
-
-            )
-            retainer_invoice.save()
-            print('saved')
-            return redirect('view_invoice')   -->

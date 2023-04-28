@@ -370,14 +370,41 @@ def retainer_invoice(request):
 @login_required(login_url='login')
 def add_invoice(request):
     customer=Customer.objects.all()
-    context={'customer':customer}
-    print('saved1')
-     
+    context={'customer':customer}    
     return render(request,'add_invoice.html',context)
+
+@login_required(login_url='login')
+def create_invoice(request):
+
+    if request.method=='POST':
+        select=request.POST['select']
+        customer_name=Customer.objects.get(id=select)
+        retainer_invoice_number=request.POST['retainer-invoice-number']
+        references=request.POST['references']
+        retainer_invoice_date=request.POST['invoicedate']
+        description=request.POST.getlist('description')
+        amount=request.POST.getlist('amount')
+        for i in range(len(request.POST.getlist('description'))):
+            description = request.POST.get('description{}'.format(i))
+            amount = request.POST.get('amount{}'.format(i))
+        total_amount=request.POST.get('total-amount')
+        customer_notes=request.POST['customer_notes']
+        terms_and_conditions=request.POST['terms']
+        
+
+
+        retainer_invoice=RetainerInvoice(
+            customer_name=customer_name,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,description=description,amount=amount,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions)
+        retainer_invoice.save()
+    
+        return redirect('retainer_invoice') 
+             
+
 
 
 @login_required(login_url='login')
-def invoice_view(request):
+def invoice_view(request,pk):
     invoices=RetainerInvoice.objects.all()
-    context={'invoices':invoices}
+    invoice=RetainerInvoice.objects.get(id=pk)
+    context={'invoices':invoices,'invoice':invoice}
     return render(request,'invoice_view.html',context)

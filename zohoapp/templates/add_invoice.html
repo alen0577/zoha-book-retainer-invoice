@@ -11,7 +11,7 @@
 
         <div class="col-md-10">
 
-          <div style="height: 650px;width: 1215px;overflow-y: scroll;"> 
+          <div style="height: 645px;width: 1215px;overflow-y: scroll;"> 
             <div class="row">
                 <div class="col-12">
                     <h3 class="align-text-top" style="font-size: 35px;" >New Retainer Invoice</h3>
@@ -22,7 +22,7 @@
 
 
 
-                    <form  action="{% url 'add_invoice' %}" method="post">
+                    <form  action="{% url 'create_invoice' %}" method="post">
                       {% csrf_token %}
                       <div class="row mb-3">
                         <label  class="col-sm-4 col-form-label">Customer Name*</label>
@@ -54,7 +54,7 @@
                       <div class="row mb-3">
                           <label  class="col-sm-4 col-form-label">Reference</label>
                           <div class="col-sm-6">
-                            <input type="text" class="form-control" name="reference">
+                            <input type="text" class="form-control" name="references">
                           </div>
                         </div><br>
                         <div class="row mb-3">
@@ -85,7 +85,8 @@
                             </table>
                             <a id="addrow" href="#">Add another line</a>
                             <br/><br/>
-                            <div class="text-white">Total: $<span id="total">0.00</span></div>
+                            <div class="text-white">Total: ₹<span id="total">0.00</span></div>
+                            <input type="hidden" id="hidden-total-amount" name="total-amount" value="">
                             <br/><br/>
                             
 
@@ -177,7 +178,7 @@
     }
   });
 </script>
-<script>
+<!-- <script>
   // Get the current invoice number from the server (e.g. using an AJAX request)
   let currentInvoiceNumber = 1;
 
@@ -191,11 +192,15 @@
     document.getElementById('invoice-number').value = 'RET-' + currentInvoiceNumber.toString().padStart(5, '0');
     // Submit the form to the server here
   });
-</script>
+</script> -->
 <script>
   function cancel() {
     window.location.href = "{% url 'base' %}";
   }
+</script>
+<script>
+  const totalAmount = document.getElementById("total").textContent;
+  document.getElementById("hidden-total-amount").value = totalAmount;
 </script>
 
 

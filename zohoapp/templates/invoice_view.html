@@ -40,7 +40,7 @@
                                             <tr>
                                                 <td>
                                                     <p>{{i.customer_name.customer_name}} <br>
-                                                    <a href="">{{i.retainer_invoice_number}}</a> | {{i.retainer_invoice_date}}
+                                                    <a href="{% url 'invoice_view' i.id %}">{{i.retainer_invoice_number}}</a> | {{i.retainer_invoice_date}}
                                                     </p>
                                                     
                                                 </td>
@@ -60,13 +60,13 @@
     
     
     
-                    <div class="col-8" style="border: 1px solid;border-color: white; height: 640px;">
+                    <div class="col-8" style="border: 1px solid;border-color: white; height: 720px;">
 
                         <section>
 
                             <div class="row">
                                 <div class="col-4"><br>
-                                    <h3>RET-00001</h3>
+                                    <h3>{{invoice.retainer_invoice_number}}</h3>
                                 </div>
                                 <div class="col-8"><br>
                                     <div class="button-group">
@@ -114,14 +114,14 @@
 
                                     <div class="invoice-header">
                                         <h1>RETAINER INVOICE</h1>
-                                        <p>Date: 16/12/2002</p>
+                                        <p>Date: {{invoice.retainer_invoice_date}}</p>
                                         
                                     </div><br>
                                     <div class="details">
-                                        <p style="text-align: end;color: white;">Retainer Invoice Number:RET-00001</p>
+                                        <p style="text-align: end;color: white;">Retainer Invoice Number:{{invoice.retainer_invoice_number}}</p>
                                         <p style="color: white;">Bill To</p>
-                                        <p style="color: white;">Customer Name</p>
-                                        <p style="color: white;">Address</p>
+                                        <p style="color: white;">{{invoice.customer_name.customer_name}}</p>
+                                        <p style="color: white;">{{invoice.customer_name.customer_address}}</p>
                                         
                                     </div><br>
                                     <table>
@@ -136,15 +136,21 @@
                                         <tbody>
                                             <tr>
                                                 <td></td>
-                                                <td>Description1</td>
-                                                <td style="text-align: end;">₹1500</td>
+                                                <td>{{invoice.description}}</td>
+                                                <td style="text-align: end;">₹{{invoice.amount}}</td>
                                                 
                                             </tr>
                                         </tbody>
                                     </table>
                                     <div class="invoice-footer">
-                                        <p>Total: <span class="invoice-total">₹1500/-</span></p>
-                                    </div>
+                                        <p>Total: <span class="invoice-total">₹{{invoice.total_amount}}</span></p>
+                                    </div><br>
+
+                                    <div class="details">
+                                        <p style="color: white;">Customer Notes: {{invoice.customer_notes}}</p>
+                                        <p style="color: white;">Terms and Conditions: {{invoice.terms_and_conditions}}</p>
+                                        
+                                    </div><br>
 
 
 
@@ -155,7 +161,7 @@
                         </section>
 
     
-                    </div>
+                    </div><br>
     
     
                 </div>

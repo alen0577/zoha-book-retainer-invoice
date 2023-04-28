@@ -83,9 +83,9 @@ class RetainerInvoice(models.Model):
     refrences=models.CharField(max_length=255)
     retainer_invoice_date=models.DateField()
     description=models.TextField()
-    amount=models.DecimalField(max_digits=10,decimal_places=2)
-    total_amount=models.DecimalField(max_digits=10,decimal_places=2)
+    amount=models.CharField(max_length=100)
+    total_amount=models.CharField(max_length=100)
     customer_notes=models.TextField()
-    terms_and_conditions=models.TextField
+    terms_and_conditions=models.TextField()
     is_draft=models.BooleanField(default=True)
     is_sent=models.BooleanField(default=False)
