@@ -382,12 +382,12 @@ def create_invoice(request):
         retainer_invoice_number=request.POST['retainer-invoice-number']
         references=request.POST['references']
         retainer_invoice_date=request.POST['invoicedate']
-        description=request.POST.getlist('description')
-        amount=request.POST.getlist('amount')
-        for i in range(len(request.POST.getlist('description'))):
-            description = request.POST.get('description{}'.format(i))
-            amount = request.POST.get('amount{}'.format(i))
-        total_amount=request.POST.get('total-amount')
+        descriptions = request.POST.getlist('description[]')
+        amounts = request.POST.getlist('amount[]')
+        for i in range(len(descriptions)):
+            description = descriptions[i]
+            amount = amounts[i]
+        total_amount=request.POST.get('total')
         customer_notes=request.POST['customer_notes']
         terms_and_conditions=request.POST['terms']
         
@@ -408,3 +408,8 @@ def invoice_view(request,pk):
     invoice=RetainerInvoice.objects.get(id=pk)
     context={'invoices':invoices,'invoice':invoice}
     return render(request,'invoice_view.html',context)
+
+def retainer_template(request,pk):
+    invoice=RetainerInvoice.objects.get(id=pk)
+    return render(request,'template.html',{'invoice':invoice})
+

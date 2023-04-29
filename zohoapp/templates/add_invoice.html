@@ -67,26 +67,32 @@
                         <div class="row">
                           <div class="col-10 ">
 
-                            <table class="order-list">
+                            <table id="retainer-table">
                               <thead>
-                                <tr>
-                                  <th class="text-white">Description</th>
-                                  <th class="text-white">Amount</th>
-                                  <th></th>
-                                </tr>
+                                  <tr>
+                                      <th class="text-white">Description</th>
+                                      <th class="text-white">Amount</th>
+                                      <th></th>
+                                  </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                  <td><input type="text"  style="width: 340px;" name="description0"/></td>
-                                  <td><input type="number" name="amount0" min="0"/></td>
-                                  <td></td>
-                                </tr>
-                              </tbody>
+                                  <tr>
+                                      <td><input type="text" class="form-control" name="description[]" style="width: 350px;"/></td>
+                                      <td><input type="number" class="form-control" name="amount[]" style="width: 100px;" /></td>
+                                      <td></td>
+                                  </tr>
+                              </tbody> 
+                              <tfoot>
+                                  <tr>
+                                      <td colspan="2">
+                                          <a href="#" id="add-another-line">Add Another Line</a>
+                                      </td>
+                                      <td  class="text-white">Total: <span id="total-amount">0</span></td>
+                                  </tr>
+                              </tfoot>
                             </table>
-                            <a id="addrow" href="#">Add another line</a>
-                            <br/><br/>
-                            <div class="text-white">Total: ₹<span id="total">0.00</span></div>
-                            <input type="hidden" id="hidden-total-amount" name="total-amount" value="">
+
+                            <input type="text" id="hidden-total-amount" name="total" value="">
                             <br/><br/>
                             
 
@@ -145,61 +151,49 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-  $(document).ready(function() {
-    var counter = 1;
-    var totalAmount = 0;
-    $("#addrow").on("click", function() {
-      var newRow = $("<tr>");
-      var cols = "";
-      cols += '<td><input type="text"  style="width: 340px;" name="description' + counter + '"/></td>';
-      cols += '<td><input type="number" name="amount' + counter + '" min="0"/></td>';
-      cols += '<td><a class="deleteRow" style="color:red;">-X-</a></td>';
-      newRow.append(cols);
-      $("table.order-list").append(newRow);
-      counter++;
-    });
-    
-    $("table.order-list").on("change", "input[name^='amount']", function(event) {
-      updateTotal();
-    });
-    
-    $("table.order-list").on("click", "a.deleteRow", function(event) {
-      $(this).closest("tr").remove();
-      updateTotal();
-    });
-    
-    function updateTotal() {
-      var total = 0;
-      $("table.order-list").find("input[name^='amount']").each(function() {
-        total += parseInt($(this).val()) || 0;
-      });
-      totalAmount = total;
-      $("#total").html(totalAmount.toFixed(2));
-    }
-  });
-</script>
-<!-- <script>
-  // Get the current invoice number from the server (e.g. using an AJAX request)
-  let currentInvoiceNumber = 1;
-
-  // Set the initial value of the invoice number field
-  document.getElementById('invoice-number').value = 'RET-' + currentInvoiceNumber.toString().padStart(5, '0');
-
-  // Increment the invoice number after each submission
-  document.querySelector('form').addEventListener('submit', (event) => {
-    event.preventDefault();
-    currentInvoiceNumber++;
-    document.getElementById('invoice-number').value = 'RET-' + currentInvoiceNumber.toString().padStart(5, '0');
-    // Submit the form to the server here
-  });
-</script> -->
-<script>
   function cancel() {
     window.location.href = "{% url 'base' %}";
   }
 </script>
 <script>
-  const totalAmount = document.getElementById("total").textContent;
+  // Add Another Line
+  var addAnotherLine = document.getElementById('add-another-line');
+  var tableBody = document.querySelector('#retainer-table tbody');
+  var newRow = '<tr><td><input type="text" class="form-control" name="description[]" /></td><td><input type="number" class="form-control" name="amount[]" style="width: 100px;" /></td><td><a href="#" class="delete-row" style="color:red;">-X-</a></td></tr>';
+  addAnotherLine.addEventListener('click', function(e) {
+      e.preventDefault();
+      tableBody.insertAdjacentHTML('beforeend', newRow);
+  });
+
+  // Delete Row
+  tableBody.addEventListener('click', function(e) {
+      if(e.target.classList.contains('delete-row')) {
+          e.preventDefault();
+          e.target.closest('tr').remove();
+          updateTotalAmount();
+      }
+  });
+
+  // Update Total Amount
+  function updateTotalAmount() {
+      var amountFields = document.querySelectorAll('#retainer-table tbody input[type="number"]');
+      var totalAmount = 0;
+      amountFields.forEach(function(amountField) {
+          totalAmount += parseFloat(amountField.value) || 0;
+      });
+      document.getElementById('total-amount').textContent = totalAmount.toFixed(2);
+  }
+
+  // Update Total Amount on Input Change
+  tableBody.addEventListener('input', function(e) {
+      if(e.target.matches('input[type="number"]')) {
+          updateTotalAmount();
+      }
+  });
+</script>
+
+<script>
+  const totalAmount = document.getElementById("total-amount").textContent;
   document.getElementById("hidden-total-amount").value = totalAmount;
 </script>
 

@@ -60,7 +60,7 @@
     
     
     
-                    <div class="col-8" style="border: 1px solid;border-color: white; height: 720px;">
+                    <div class="col-8" style="border: 1px solid;border-color: white; height: 800px;">
 
                         <section>
 
@@ -74,11 +74,11 @@
                                           <i class="fas fa-edit"></i>
                                           Edit
                                         </button>
-                                        <button class="pdf-button">
+                                        <button class="pdf-button" onclick="convertHTMLtoPDF()" >
                                           <i class="fas fa-file-pdf"></i>
                                           PDF
                                         </button>
-                                        <button class="print-button">
+                                        <button class="print-button" onclick="printRetainerInvoice()">
                                           <i class="fas fa-print"></i>
                                           Print
                                         </button>
@@ -107,21 +107,22 @@
                                     </form>
 
                                 </div>
-                            </div><br><br><br>
+                            </div><br><br>
                             <div class="row">
                                 <div class="col-2"></div>
-                                <div class="col-9 container border" style="background-color: rgb(79, 78, 78);" ><br><br>
+                                <div id="invoice-section" class="col-9  container border"  style="background-color: rgb(251, 251, 251);border-color: #000000;" ><br><br>
 
                                     <div class="invoice-header">
-                                        <h1>RETAINER INVOICE</h1>
-                                        <p>Date: {{invoice.retainer_invoice_date}}</p>
+                                        <p style="color: #000000;font-size: x-large;text-align: center;">RETAINER  INVOICE</p>
+                                        
                                         
                                     </div><br>
                                     <div class="details">
-                                        <p style="text-align: end;color: white;">Retainer Invoice Number:{{invoice.retainer_invoice_number}}</p>
-                                        <p style="color: white;">Bill To</p>
-                                        <p style="color: white;">{{invoice.customer_name.customer_name}}</p>
-                                        <p style="color: white;">{{invoice.customer_name.customer_address}}</p>
+                                        <p style="text-align: end;color: rgb(0, 0, 0);">Retainer Invoice Date: {{invoice.retainer_invoice_date}}</p>
+                                        <p style="text-align: end;color: rgb(0, 0, 0);">Retainer Invoice Number:<strong>{{invoice.retainer_invoice_number}}</strong></p>
+                                        <p style="color: rgb(0, 0, 0);">Bill To,</p>
+                                        <p style="color: rgb(0, 0, 0);">{{invoice.customer_name.customer_name}}</p>
+                                        <p style="color: rgb(0, 0, 0);">{{invoice.customer_name.customer_address}}</p>
                                         
                                     </div><br>
                                     <table>
@@ -137,18 +138,18 @@
                                             <tr>
                                                 <td></td>
                                                 <td>{{invoice.description}}</td>
-                                                <td style="text-align: end;">₹{{invoice.amount}}</td>
+                                                <td style="text-align: end;">{{invoice.amount}}</td>
                                                 
                                             </tr>
                                         </tbody>
                                     </table>
                                     <div class="invoice-footer">
-                                        <p>Total: <span class="invoice-total">₹{{invoice.total_amount}}</span></p>
+                                        <p>Total: <span class="invoice-total">{{invoice.total_amount}}</span></p>
                                     </div><br>
 
                                     <div class="details">
-                                        <p style="color: white;">Customer Notes: {{invoice.customer_notes}}</p>
-                                        <p style="color: white;">Terms and Conditions: {{invoice.terms_and_conditions}}</p>
+                                        <p style="color: rgb(0, 0, 0);">Customer Notes: {{invoice.customer_notes}}</p>
+                                        <p style="color: rgb(0, 0, 0);">Terms and Conditions: {{invoice.terms_and_conditions}}</p>
                                         
                                     </div><br>
 
@@ -180,6 +181,50 @@
 
 
 
+
+<script src=
+ "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+</script>
+<script src=
+"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+</script>
+<script src=
+ "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+</script>
+
+<script type="text/javascript">
+    function convertHTMLtoPDF() {
+        const { jsPDF } = window.jspdf;
+
+        var doc = new jsPDF('l', 'mm', [650, 630]);
+        var pdfjs = document.querySelector('#invoice-section');
+
+        doc.html(pdfjs, {
+            callback: function(doc) {
+                doc.save("retainer-invoice.pdf");
+            },
+            x: 12,
+            y: 30
+        });               
+    }           
+</script> 
+<script>
+function printRetainerInvoice() {
+  // select the retainer invoice section
+  const retainerSection = document.querySelector('#invoice-section');
+  
+  // get the HTML content of the retainer invoice section
+  const retainerInvoiceHTML = retainerSection.innerHTML;
+  
+  // create a new window and write the retainer invoice HTML to it
+  const newWindow = window.open();
+  newWindow.document.write(retainerInvoiceHTML);
+  
+  // print the new window
+  newWindow.print();
+}
+</script>  
+
 <script>
     // JavaScript code
 const addCommentLink = document.getElementById('add-comment-link');
@@ -205,29 +250,13 @@ addCommentLink.addEventListener('click', function(event) {
         padding: 8px;
         text-align: left;
         border-bottom: 1px solid #ddd;
-        color: white;
+        color: rgb(0, 0, 0);
     }
     th {
         background-color: #f2f2f2;
         color: black;
     }
-    .invoice-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-        
-    }
-    .invoice-header h1 {
-        margin: 0;
-        font-size: 35px;
-        
-    }
-    .invoice-header p {
-        margin: 0;
-        font-size: 14px;
-        color: #ffffff;
-    }
+    
     .invoice-footer {
         display: flex;
         justify-content: flex-end;
@@ -236,7 +265,7 @@ addCommentLink.addEventListener('click', function(event) {
     .invoice-footer p {
         margin: 0;
         font-size: 14px;
-        color: #ffffff;
+        color: #000000;
     }
     .invoice-total {
         font-weight: bold;
