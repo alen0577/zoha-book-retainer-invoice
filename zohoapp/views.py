@@ -369,8 +369,8 @@ def retainer_invoice(request):
 
 @login_required(login_url='login')
 def add_invoice(request):
-    customer=Customer.objects.all()
-    context={'customer':customer}    
+    customer=Customer.objects.all()   
+    context={'customer':customer,}    
     return render(request,'add_invoice.html',context)
 
 @login_required(login_url='login')
@@ -382,20 +382,24 @@ def create_invoice(request):
         retainer_invoice_number=request.POST['retainer-invoice-number']
         references=request.POST['references']
         retainer_invoice_date=request.POST['invoicedate']
-        descriptions = request.POST.getlist('description[]')
-        amounts = request.POST.getlist('amount[]')
-        for i in range(len(descriptions)):
-            description = descriptions[i]
-            amount = amounts[i]
         total_amount=request.POST.get('total')
         customer_notes=request.POST['customer_notes']
         terms_and_conditions=request.POST['terms']
-        
-
+        descriptions = request.POST.getlist('description[]')
+        amounts = request.POST.getlist('amount[]')
+        print(descriptions,amounts)
+        data = zip(descriptions, amounts)
+        # for i in range(len(descriptions)) :
+        #     description = descriptions[i]
+        #     amount = amounts[i]  
+        #     print(description,amount)
 
         retainer_invoice=RetainerInvoice(
-            customer_name=customer_name,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,description=description,amount=amount,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions)
-        retainer_invoice.save()
+            customer_name=customer_name,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,description=descriptions,amount=amounts,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions)
+        retainer_invoice.save()            
+        
+
+        
     
         return redirect('retainer_invoice') 
              
@@ -413,3 +417,7 @@ def retainer_template(request,pk):
     invoice=RetainerInvoice.objects.get(id=pk)
     return render(request,'template.html',{'invoice':invoice})
 
+def retainer_edit_page(request,pk):
+    invoice=RetainerInvoice.objects.get(id=pk)
+    context={'invoice':invoice}
+    return render(request,'retainer_invoice_edit.html', context)

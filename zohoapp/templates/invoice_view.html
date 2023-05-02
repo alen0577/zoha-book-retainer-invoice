@@ -86,24 +86,25 @@
                                           <i class="fas fa-envelope"></i>
                                           Mail
                                         </button>
-                                        <button class="attach-button">
+                                        <button class="attach-button" onclick="showUploadBox()">
                                           <i class="fas fa-paperclip"></i>
                                           Attach
                                         </button>
-                                        <button class="close-button">
+                                        <button class="close-button" onclick="window.history.back()">
                                           <i class="fa fa-close"></i>
                                           Close
                                         </button>
-                                      </div>
+                                    </div>
                                       
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row"><br>
+                                <input type="file" id="fileUpload" style="display:none;margin-left: 590px;">
                                 <div class="col-12"><br><br>
                                     <a href="#" id="add-comment-link"><i class="fa-solid fa-plus "></i> Add Comment</a>
                                     <form id="comment-form" style="display:none;">
-                                        <textarea rows="2" cols="80" name="comment"></textarea><br>
-                                        <button class="btn btn-primary" type="submit">Add comment</button>
+                                        <textarea rows="2" cols="80" name="comment"></textarea><br>                                        
+                                        <button class="btn btn-primary">Add comment</button>
                                     </form>
 
                                 </div>
@@ -135,12 +136,20 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            
                                             <tr>
                                                 <td></td>
-                                                <td>{{invoice.description}}</td>
+                                                
+                                                <td>{{invoice.description }}</td>
+                                                
+                                                
+
+                                                
                                                 <td style="text-align: end;">{{invoice.amount}}</td>
                                                 
+                                              
                                             </tr>
+                                            
                                         </tbody>
                                     </table>
                                     <div class="invoice-footer">
@@ -208,22 +217,34 @@
         });               
     }           
 </script> 
+
+
 <script>
-function printRetainerInvoice() {
-  // select the retainer invoice section
-  const retainerSection = document.querySelector('#invoice-section');
-  
-  // get the HTML content of the retainer invoice section
-  const retainerInvoiceHTML = retainerSection.innerHTML;
-  
-  // create a new window and write the retainer invoice HTML to it
-  const newWindow = window.open();
-  newWindow.document.write(retainerInvoiceHTML);
-  
-  // print the new window
-  newWindow.print();
-}
+
+    function printRetainerInvoice() {
+      // select the retainer invoice section
+      const retainerSection = document.querySelector('#invoice-section');
+      
+      // get the HTML content of the retainer invoice section
+      const retainerInvoiceHTML = retainerSection.innerHTML;
+      
+      // create a new window and write the retainer invoice HTML to it
+      const newWindow = window.open();
+      newWindow.document.write(retainerInvoiceHTML);
+      
+      // print the new window
+      newWindow.print();
+    }
+
 </script>  
+
+<script>
+    function showUploadBox() {
+  document.getElementById("fileUpload").style.display = "block";
+}
+</script>
+
+
 
 <script>
     // JavaScript code
@@ -270,6 +291,7 @@ addCommentLink.addEventListener('click', function(event) {
     .invoice-total {
         font-weight: bold;
     }
+    
 </style>
 <style>
 .button-group {
