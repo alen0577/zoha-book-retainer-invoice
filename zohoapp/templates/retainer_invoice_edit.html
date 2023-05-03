@@ -22,7 +22,7 @@
 
 
 
-                    <form  action="{% url 'create_invoice' %}" method="post">
+                    <form  action="" method="post">
                       {% csrf_token %}
                       <div class="row mb-3">
                         <label  class="col-sm-4 col-form-label">Customer Name*</label>
@@ -48,19 +48,19 @@
                       <div class="row mb-3">
                         <label  class="col-sm-4 col-form-label">Retainer Invoice Number*</label>
                         <div class="col-sm-6">
-                          <input type="text" class="form-control" name="retainer-invoice-number" id="invoice-number">
+                          <input type="text" class="form-control" name="retainer-invoice-number" id="invoice-number" value="{{invoice.retainer_invoice_number}}">
                         </div>
                       </div><br>
                       <div class="row mb-3">
                           <label  class="col-sm-4 col-form-label">Reference</label>
                           <div class="col-sm-6">
-                            <input type="text" class="form-control" name="references">
+                            <input type="text" class="form-control" name="references" value="{{invoice.refrences}}">
                           </div>
                         </div><br>
                         <div class="row mb-3">
                           <label  class="col-sm-4 col-form-label">Retainer Invoice Date*</label>
                           <div class="col-sm-6">
-                            <input type="date" class="form-control" name="invoicedate" id="dateField">
+                            <input type="date" class="form-control" name="invoicedate" id="dateField" value="{{invoice.retainer_invoice_date}}">
                           </div>
                         </div><br>
 
@@ -77,8 +77,8 @@
                               </thead>
                               <tbody>
                                   <tr>
-                                      <td><input type="text" class="form-control" name="description[]" style="width: 350px;"/></td>
-                                      <td><input type="number" class="form-control" name="amount[]" style="width: 100px;" /></td>
+                                      <td><input type="text" class="form-control" name="description[]" value="{{invoice.description}}" style="width: 350px;"/></td>
+                                      <td><input type="number" class="form-control" name="amount[]" value="{{invoice.amount}}" style="width: 100px;" /></td>
                                       <td></td>
                                   </tr>
                               </tbody> 
@@ -92,7 +92,7 @@
                               </tfoot>
                             </table>
 
-                            <input type="text" id="hidden-total-amount" name="total" value="">
+                            <input type="text" id="hidden-total-amount" name="total" value="{{invoice.total_amount}}">
                             <br/><br/>
                             
 
@@ -104,7 +104,7 @@
                         <div class="mb-3">
                           <label for="formGroupExampleInput" class="form-label">Customer Notes</label>
                           <div class="form-floating">
-                            <textarea class="form-control col-8" name="customer_notes" placeholder="Enter any notes to be displayed in your transaction" id="floatingTextarea"></textarea>
+                            <textarea class="form-control col-8" name="customer_notes"  id="floatingTextarea">{{invoice.customer_notes}}</textarea>
                           
                           </div>
                         </div><br><br>
@@ -113,15 +113,15 @@
                         <div class="mb-3">
                           <label for="formGroupExampleInput" class="form-label">Terms and Conditions</label>
                           <div class="form-floating">
-                            <textarea class="form-control col-12" name="terms" placeholder="Enter the terms and conditions of your business to be displayed in your transactions " id="floatingTextarea"></textarea>
+                            <textarea class="form-control col-12" name="terms"   id="floatingTextarea">{{invoice.terms_and_conditions}}</textarea>
                             
                           </div>
                         </div><br><br>
 
                         
                           <!-- <button class="btn btn-primary" type="button" name="action" value="draft">Save as Draft</button> -->
-                          <button class="btn"> Save</button> 
-                          <button class="btn btn-primary" type="button" onclick="window.history.back()">Cancel</button><br><br>
+                          <button class="btn btn-primary"> Save</button> 
+                          <button class="btn btn-outline-primary" type="button" onclick="window.history.back()">Cancel</button><br><br>
                         
 
                         
@@ -145,9 +145,9 @@
 
 </section>
 
-<script>
+<!-- <script>
   document.getElementById('dateField').valueAsDate = new Date();
-</script>
+</script> -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
@@ -189,10 +189,10 @@
 </script>
 
 
-<script>
+<!-- <script>
   const totalAmount = document.getElementById("total-amount").textContent;
   document.getElementById("hidden-total-amount").value = totalAmount;
-</script>
+</script> -->
 
 
 

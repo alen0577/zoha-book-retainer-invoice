@@ -82,10 +82,14 @@ class RetainerInvoice(models.Model):
     retainer_invoice_number=models.CharField(max_length=255)
     refrences=models.CharField(max_length=255)
     retainer_invoice_date=models.DateField()
-    description=models.TextField()
-    amount=models.CharField(max_length=100)
     total_amount=models.CharField(max_length=100)
     customer_notes=models.TextField()
     terms_and_conditions=models.TextField()
     is_draft=models.BooleanField(default=True)
     is_sent=models.BooleanField(default=False)
+
+class Retaineritems(models.Model):
+    retainer=models.ForeignKey(RetainerInvoice, on_delete=models.CASCADE)
+    description=models.TextField()
+    amount=models.CharField(max_length=100)
+        

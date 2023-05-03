@@ -23,10 +23,10 @@ urlpatterns = [
     path('add_customer/',views.add_customer,name='add_customer'),
     path('retainer_invoices/',views.retainer_invoice,name='retainer_invoice'),
     path('add_invoice/',views.add_invoice,name='add_invoice'),
-    path('create_invoice/',views.create_invoice,name='create_invoice'),
+    path('create_invoice_draft/',views.create_invoice_draft,name='create_invoice_draft'),
+    path('create_invoice_send/',views.create_invoice_send,name='create_invoice_send'),
     path('view_invoice/<int:pk>',views.invoice_view,name='invoice_view'),
     path('retainer_template/<int:pk>',views.retainer_template,name='retainer_template'),
-    path('retainer_invoice_edit/<int:pk>',views.retainer_edit_page,name='retainer_template'),
-    
+    path('retainer_invoice_edit/<int:pk>',views.retainer_edit_page,name='retainer_edit_page'),   
     
 ]

@@ -22,7 +22,7 @@
 
 
 
-                    <form  action="{% url 'create_invoice' %}" method="post">
+                    <form  action=""  id="home" method="post">
                       {% csrf_token %}
                       <div class="row mb-3">
                         <label  class="col-sm-4 col-form-label">Customer Name*</label>
@@ -119,9 +119,9 @@
                         </div><br><br>
 
                         
-                          <!-- <button class="btn btn-primary" type="button" name="action" value="draft">Save as Draft</button> -->
-                          <button class="btn"> Save</button> 
-                          <button class="btn btn-primary" type="button" onclick="window.history.back()">Cancel</button><br><br>
+                          <div class="btn btn-primary" type="button"  onclick="savedraft()">Save as Draft</div>
+                          <div class="btn btn-primary" type="button" name="action" value="send" onclick="savesend()">Save and Send</div>
+                          <div class="btn btn-primary" type="button" onclick="window.history.back()">Cancel</div><br><br>
                         
 
                         
@@ -194,6 +194,21 @@
   document.getElementById("hidden-total-amount").value = totalAmount;
 </script>
 
+<script>
+
+  function savedraft() {
+    var frm=document.getElementById("home");
+    frm.action=("{% url 'create_invoice_draft' %}")
+  }
+  
+
+  function savesend() {
+    var frm=document.getElementById("home");
+    frm.action=("{% url 'create_invoice_send' %}")
+    
+  }
+
+</script>
 
 
 

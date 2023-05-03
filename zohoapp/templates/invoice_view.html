@@ -60,7 +60,7 @@
     
     
     
-                    <div class="col-8" style="border: 1px solid;border-color: white; height: 800px;">
+                    <div class="col-8" style="border: 1px solid;border-color: white; height: 820px;">
 
                         <section>
 
@@ -70,10 +70,10 @@
                                 </div>
                                 <div class="col-8"><br>
                                     <div class="button-group">
-                                        <button class="edit-button">
-                                          <i class="fas fa-edit"></i>
-                                          Edit
-                                        </button>
+                                        <a href="{% url 'retainer_edit_page' invoice.id %}"><button class="edit-button">
+                                            <i class="fas fa-edit"></i>
+                                            Edit
+                                          </button></a>
                                         <button class="pdf-button" onclick="convertHTMLtoPDF()" >
                                           <i class="fas fa-file-pdf"></i>
                                           PDF
@@ -111,21 +111,21 @@
                             </div><br><br>
                             <div class="row">
                                 <div class="col-2"></div>
-                                <div id="invoice-section" class="col-9  container border"  style="background-color: rgb(251, 251, 251);border-color: #000000;" ><br><br>
+                                <div id="invoice-section" class="col-9  container border"  style="background-color: rgb(251, 251, 251);border-color: #000000;" >
 
                                     <div class="invoice-header">
-                                        <p style="color: #000000;font-size: x-large;text-align: center;">RETAINER  INVOICE</p>
+                                        <p style="color: #000000;font-size: x-large;text-align: center;margin-top: 10px;">RETAINER  INVOICE</p>
                                         
                                         
-                                    </div><br>
+                                    </div>
                                     <div class="details">
                                         <p style="text-align: end;color: rgb(0, 0, 0);">Retainer Invoice Date: {{invoice.retainer_invoice_date}}</p>
-                                        <p style="text-align: end;color: rgb(0, 0, 0);">Retainer Invoice Number:<strong>{{invoice.retainer_invoice_number}}</strong></p>
+                                        <p style="text-align: end;color: rgb(0, 0, 0);">Retainer Invoice Number:<b>{{invoice.retainer_invoice_number}}</b></p>
                                         <p style="color: rgb(0, 0, 0);">Bill To,</p>
                                         <p style="color: rgb(0, 0, 0);">{{invoice.customer_name.customer_name}}</p>
-                                        <p style="color: rgb(0, 0, 0);">{{invoice.customer_name.customer_address}}</p>
+                                        <p style="color: rgb(0, 0, 0);">{{invoice.customer_name.customer_address|linebreaksbr}}</p>
                                         
-                                    </div><br>
+                                    </div>
                                     <table>
                                         <thead>
                                             <tr>
@@ -136,20 +136,17 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            
+                                            {% for i in item %}
                                             <tr>
                                                 <td></td>
                                                 
-                                                <td>{{invoice.description }}</td>
-                                                
-                                                
-
-                                                
-                                                <td style="text-align: end;">{{invoice.amount}}</td>
+                                                <td>{{i.description}}</td>
+                                            
+                                                <td style="text-align: end;">{{i.amount }}</td>
                                                 
                                               
                                             </tr>
-                                            
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                     <div class="invoice-footer">
@@ -160,7 +157,7 @@
                                         <p style="color: rgb(0, 0, 0);">Customer Notes: {{invoice.customer_notes}}</p>
                                         <p style="color: rgb(0, 0, 0);">Terms and Conditions: {{invoice.terms_and_conditions}}</p>
                                         
-                                    </div><br>
+                                    </div>
 
 
 
