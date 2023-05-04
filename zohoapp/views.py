@@ -388,8 +388,9 @@ def create_invoice_draft(request):
         print('middle')
         retainer_invoice=RetainerInvoice(
         customer_name=customer_name,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions)
-
+        print('save')
         retainer_invoice.save()
+        print('saved')
 
         description = request.POST.getlist('description[]')
         amount =request.POST.getlist('amount[]')
@@ -401,7 +402,7 @@ def create_invoice_draft(request):
         else:
             pass
 
-        return redirect('retaner_invoice')
+        return redirect('retainer_invoice')
 
          
 @login_required(login_url='login')
@@ -419,9 +420,10 @@ def create_invoice_send(request):
         customer_name=customer_name,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions)
         retainer_invoice.save()
         retainer_invoice.is_sent=True
+        retainer_invoice.is_draft=False
         retainer_invoice.save()
         description = request.POST.getlist('description[]')
-        amount =request.POST.getlist('amount[]')
+        amount = request.POST.getlist('amount[]')
         if len(description)==len(amount):
             mapped = zip(description,amount)
             mapped=list(mapped)
@@ -429,7 +431,7 @@ def create_invoice_send(request):
                 created = Retaineritems.objects.get_or_create(description=ele[0],amount=ele[1], retainer=retainer_invoice)
         else:
             pass
-        return redirect('invoice_view')
+        return redirect('retainer_invoice')
 
 
 
@@ -442,11 +444,46 @@ def invoice_view(request,pk):
     context={'invoices':invoices,'invoice':invoice,'item':item}
     return render(request,'invoice_view.html',context)
 
+@login_required(login_url='login')
 def retainer_template(request,pk):
     invoice=RetainerInvoice.objects.get(id=pk)
     return render(request,'template.html',{'invoice':invoice})
 
+@login_required(login_url='login')
 def retainer_edit_page(request,pk):
     invoice=RetainerInvoice.objects.get(id=pk)
-    context={'invoice':invoice}
+    customer=Customer.objects.all()
+    item=Retaineritems.objects.filter(retainer=pk)
+    context={'invoice':invoice, 'customer':customer,'item':item}
     return render(request,'retainer_invoice_edit.html', context)
+
+
+@login_required(login_url='login')
+def retainer_update(request,pk):
+
+    if request.method=='POST':
+        retainer_invoice=RetainerInvoice.objects.get(id=pk)
+        select=request.POST['select']
+        retainer_invoice.customer_name=Customer.objects.get(id=select)
+        retainer_invoice.retainer_invoice_number=request.POST['retainer-invoice-number']
+        retainer_invoice.refrences=request.POST['references']
+        retainer_invoice.retainer_invoice_date=request.POST['invoicedate']
+        retainer_invoice.total_amount=request.POST.get('total')
+        retainer_invoice.customer_notes=request.POST['customer_notes']
+        retainer_invoice.terms_and_conditions=request.POST['terms']
+    
+        retainer_invoice.save()
+        retainer_item=Retaineritems.objects.filter(retainer=pk)
+        retainer_item.description=request.POST.getlist('description[]')
+        retainer_item.amount=request.POST.getlist('amount[]')
+        if len(retainer_item.description)==len(retainer_item.amount):
+            mapped = zip(retainer_item.description,retainer_item.amount)
+            mapped=list(mapped)
+            for ele in mapped:
+                updated=Retaineritems.objects.update_or_create(description=ele[0],amount=ele[1], retainer=retainer_invoice)
+        else:
+            pass
+        
+        return redirect('retainer_invoice')
+
+

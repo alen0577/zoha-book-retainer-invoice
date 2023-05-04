@@ -27,6 +27,7 @@ urlpatterns = [
     path('create_invoice_send/',views.create_invoice_send,name='create_invoice_send'),
     path('view_invoice/<int:pk>',views.invoice_view,name='invoice_view'),
     path('retainer_template/<int:pk>',views.retainer_template,name='retainer_template'),
-    path('retainer_invoice_edit/<int:pk>',views.retainer_edit_page,name='retainer_edit_page'),   
+    path('retainer_invoice_edit/<int:pk>',views.retainer_edit_page,name='retainer_edit_page'), 
+    path('retainer_invoice_edit/<int:pk>',views.retainer_update,name='retainer_update'),  
     
 ]

@@ -7,141 +7,139 @@
 
 <section>
 
-    <div class="row fixed-top " style="top: 7rem; margin-left: 18rem;" >
+  <div class="row fixed-top " style="top: 7rem; margin-left: 18rem;" >
 
-        <div class="col-md-10">
+    <div class="col-md-10">
 
-          <div style="height: 645px;width: 1215px;overflow-y: scroll;"> 
-            <div class="row">
-                <div class="col-12">
-                    <h3 class="align-text-top" style="font-size: 35px;" >New Retainer Invoice</h3>
-                </div>
-            </div><br><br>
-            <div class="row">
-                <div class="col-7">
-
-
-
-                    <form  action="" method="post">
-                      {% csrf_token %}
-                      <div class="row mb-3">
-                        <label  class="col-sm-4 col-form-label">Customer Name*</label>
-                        
-                        <div class="col-sm-8">
-                          
-                          <select class="form-control form-select" name="select" onchange="if (this.value === 'new') window.location.href = '/add_customer/';">
-                            
-                            
-                            <option value="">Select  Customer</option>
-                            {% for i in customer %}
-                            <option value="{{i.id}}">{{i.customer_name}}</option>
-                            {% endfor %}         
-                            <option value="new" style="color: blue;">+ New Customer</option>
-                            
-                            
-                          </select>
-                          
-
-                        </div>
-                        
-                      </div><br>
-                      <div class="row mb-3">
-                        <label  class="col-sm-4 col-form-label">Retainer Invoice Number*</label>
-                        <div class="col-sm-6">
-                          <input type="text" class="form-control" name="retainer-invoice-number" id="invoice-number" value="{{invoice.retainer_invoice_number}}">
-                        </div>
-                      </div><br>
-                      <div class="row mb-3">
-                          <label  class="col-sm-4 col-form-label">Reference</label>
-                          <div class="col-sm-6">
-                            <input type="text" class="form-control" name="references" value="{{invoice.refrences}}">
-                          </div>
-                        </div><br>
-                        <div class="row mb-3">
-                          <label  class="col-sm-4 col-form-label">Retainer Invoice Date*</label>
-                          <div class="col-sm-6">
-                            <input type="date" class="form-control" name="invoicedate" id="dateField" value="{{invoice.retainer_invoice_date}}">
-                          </div>
-                        </div><br>
-
-                        <div class="row">
-                          <div class="col-10 ">
-
-                            <table id="retainer-table">
-                              <thead>
-                                  <tr>
-                                      <th class="text-white">Description</th>
-                                      <th class="text-white">Amount</th>
-                                      <th></th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr>
-                                      <td><input type="text" class="form-control" name="description[]" value="{{invoice.description}}" style="width: 350px;"/></td>
-                                      <td><input type="number" class="form-control" name="amount[]" value="{{invoice.amount}}" style="width: 100px;" /></td>
-                                      <td></td>
-                                  </tr>
-                              </tbody> 
-                              <tfoot>
-                                  <tr>
-                                      <td colspan="2">
-                                          <a href="#" id="add-another-line">Add Another Line</a>
-                                      </td>
-                                      <td  class="text-white">Total: <span id="total-amount">0</span></td>
-                                  </tr>
-                              </tfoot>
-                            </table>
-
-                            <input type="text" id="hidden-total-amount" name="total" value="{{invoice.total_amount}}">
-                            <br/><br/>
-                            
-
-                          </div>
-                          <div class="col-2"></div>
-
-                        </div><br><br>
-
-                        <div class="mb-3">
-                          <label for="formGroupExampleInput" class="form-label">Customer Notes</label>
-                          <div class="form-floating">
-                            <textarea class="form-control col-8" name="customer_notes"  id="floatingTextarea">{{invoice.customer_notes}}</textarea>
-                          
-                          </div>
-                        </div><br><br>
-
-
-                        <div class="mb-3">
-                          <label for="formGroupExampleInput" class="form-label">Terms and Conditions</label>
-                          <div class="form-floating">
-                            <textarea class="form-control col-12" name="terms"   id="floatingTextarea">{{invoice.terms_and_conditions}}</textarea>
-                            
-                          </div>
-                        </div><br><br>
-
-                        
-                          <!-- <button class="btn btn-primary" type="button" name="action" value="draft">Save as Draft</button> -->
-                          <button class="btn btn-primary"> Save</button> 
-                          <button class="btn btn-outline-primary" type="button" onclick="window.history.back()">Cancel</button><br><br>
-                        
-
-                        
-
-
-                          
-
-
-                    </form>
-
-                </div>
-                <div class="col-5"></div>
+      <div style="height: 645px;width: 1215px;overflow-y: scroll;"> 
+        <div class="row">
+            <div class="col-12">
+                <h3 class="align-text-top" style="font-size: 35px;" >New Retainer Invoice</h3>
             </div>
-          </div> 
-        
-        
+        </div><br><br>
+        <div class="row">
+          <div class="col-7">
 
+
+
+            <form  action="" id="home" method="post">
+              {% csrf_token %}
+              <div class="row mb-3">
+                <label  class="col-sm-4 col-form-label">Customer Name*</label>
+                    
+                <div class="col-sm-8">
+                      
+                  <select class="form-control form-select" name="select" onchange="if (this.value === 'new') window.location.href = '/add_customer/';">
+                        
+                        
+                    <option value="{{invoice.customer_name.id}}">{{invoice.customer_name.customer_name}}</option>
+                    {% for i in customer %}
+                    <option value="{{i.id}}">{{i.customer_name}}</option>
+                    {% endfor %}         
+                    <option value="new" style="color: blue;">+ New Customer</option>
+                        
+                        
+                  </select>
+                      
+
+                </div>
+                    
+              </div><br>
+              <div class="row mb-3">
+                <label  class="col-sm-4 col-form-label">Retainer Invoice Number*</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="retainer-invoice-number" id="invoice-number" value="{{invoice.retainer_invoice_number}}">
+                </div>
+              </div><br>
+              <div class="row mb-3">
+                <label  class="col-sm-4 col-form-label">Reference</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" name="references" value="{{invoice.refrences}}">
+                </div>
+              </div><br>
+              <div class="row mb-3">
+                <label  class="col-sm-4 col-form-label">Retainer Invoice Date*</label>
+                <div class="col-sm-6">
+                  <input type="date" class="form-control" name="invoicedate" id="dateField" value="{{invoice.retainer_invoice_date|date:'Y-m-d' }}">
+                </div>
+              </div><br>
+
+              <div class="row">
+                <div class="col-10 ">
+                  <table id="retainer-table">
+                    <thead>
+                      <tr>
+                        <th class="text-white">Description</th>
+                        <th class="text-white">Amount</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for i in item  %}
+                    <tr>
+                      <td><input type="text" class="form-control" name="description[]"  value="{{i.description}}" style="width: 350px;"/></td>
+                      <td><input type="number" class="form-control" name="amount[]"   value="{{i.amount}}" style="width: 100px;" /></td>
+                      <td><a href="#" class="delete-row" style="color:red;">-X-</a></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody> 
+                    <tfoot>
+                    <tr>
+                      <td colspan="2">
+                        <a href="#" id="add-another-line">Add Another Line</a>
+                      </td>
+                      <td  class="text-white">Total: <span id="total-amount">{{invoice.total_amount}}</span></td>
+                    </tr>
+                    </tfoot>
+                  </table>
+
+                  <input type="text" id="hidden-total-amount" name="total" value="{{invoice.total_amount}}">
+                  <br/><br/>                            
+
+                </div>
+                <div class="col-2"></div>
+
+              </div><br><br>
+
+              <div class="mb-3">
+                <label for="formGroupExampleInput" class="form-label">Customer Notes</label>
+                <div class="form-floating">
+                  <textarea class="form-control col-8" name="customer_notes"  id="floatingTextarea">{{invoice.customer_notes}}</textarea>
+                      
+                </div>
+              </div><br><br>
+
+
+              <div class="mb-3">
+                <label for="formGroupExampleInput" class="form-label">Terms and Conditions</label>
+                <div class="form-floating">
+                  <textarea class="form-control col-12" name="terms"   id="floatingTextarea">{{invoice.terms_and_conditions}}</textarea>
+                        
+                </div>
+              </div><br><br>
+
+              <div class="submit">
+
+                <button class="btn btn-outline-primary" type="submit" value="Save" onclick="update()">Save</button> 
+                <button class="btn btn-outline-primary" type="button" onclick="window.history.back()">Cancel</button><br><br>
+
+
+              </div>
+
+            </form>
+
+          </div>
+          <div class="col-5"></div>
         </div>
+      </div> 
+    
+    
 
     </div>
+
+        
+
+  </div>
 
 </section>
 
@@ -194,7 +192,26 @@
   document.getElementById("hidden-total-amount").value = totalAmount;
 </script> -->
 
+<script>
 
+function update() {
+
+var frm=document.getElementById("home");
+
+let customMsg = "Do you want to submit?";
+
+if (confirm(customMsg)) {
+
+  frm.action=("{% url 'create_invoice_draft' %}")
+} else {
+  console.log("User Clicked CANCEL");
+}
+}
+
+ 
+ 
+
+</script>
 
 
 
