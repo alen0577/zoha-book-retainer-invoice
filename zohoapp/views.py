@@ -473,14 +473,15 @@ def retainer_update(request,pk):
         retainer_invoice.terms_and_conditions=request.POST['terms']
     
         retainer_invoice.save()
+        
+        description=request.POST.getlist('description[]')
+        amount=request.POST.getlist('amount[]')
         retainer_item=Retaineritems.objects.filter(retainer=pk)
-        retainer_item.description=request.POST.getlist('description[]')
-        retainer_item.amount=request.POST.getlist('amount[]')
-        if len(retainer_item.description)==len(retainer_item.amount):
-            mapped = zip(retainer_item.description,retainer_item.amount)
+        if len(description)==len(amount):
+            mapped = zip(description,amount)
             mapped=list(mapped)
             for ele in mapped:
-                updated=Retaineritems.objects.update_or_create(description=ele[0],amount=ele[1], retainer=retainer_invoice)
+                updated=Retaineritems.objects.filter(retainer=pk).update(description=ele[0],amount=ele[1])
         else:
             pass
         

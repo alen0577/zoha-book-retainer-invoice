@@ -22,7 +22,7 @@
 
 
 
-            <form  action="" id="home" method="post">
+            <form  method="post" action="{% url 'retainer_update' invoice.id %}"   enctype="multipart/form-data">
               {% csrf_token %}
               <div class="row mb-3">
                 <label  class="col-sm-4 col-form-label">Customer Name*</label>
@@ -118,15 +118,13 @@
                 </div>
               </div><br><br>
 
-              <div class="submit">
+              
 
-                <button class="btn btn-outline-primary" type="submit" value="Save" onclick="update()">Save</button> 
-                <button class="btn btn-outline-primary" type="button" onclick="window.history.back()">Cancel</button><br><br>
-
-
-              </div>
+              <button class="btn btn-primary" type="submit" name="action" value="Save">Save</button> 
+              <button class="btn btn-primary " onclick="window.history.back()" >Cancel</button>          
 
             </form>
+           
 
           </div>
           <div class="col-5"></div>
@@ -187,31 +185,7 @@
 </script>
 
 
-<!-- <script>
-  const totalAmount = document.getElementById("total-amount").textContent;
-  document.getElementById("hidden-total-amount").value = totalAmount;
-</script> -->
 
-<script>
-
-function update() {
-
-var frm=document.getElementById("home");
-
-let customMsg = "Do you want to submit?";
-
-if (confirm(customMsg)) {
-
-  frm.action=("{% url 'create_invoice_draft' %}")
-} else {
-  console.log("User Clicked CANCEL");
-}
-}
-
- 
- 
-
-</script>
 
 
 
