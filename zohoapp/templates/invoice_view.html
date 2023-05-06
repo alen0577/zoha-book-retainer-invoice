@@ -82,13 +82,22 @@
                                           <i class="fas fa-print"></i>
                                           Print
                                         </button>
-                                        <button class="mail-button" onclick="sendEmail()">
-                                          <i class="fas fa-envelope"></i>
-                                          Mail
-                                        </button>
+
+                                        <form method="post" action="{% url 'mail_send' %}" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <button class="mail-button">
+                                            <i class="fas fa-envelope"></i>
+                                            Mail
+                                            </button>
+                                            <input type="file" id="file-input" name="files" style="display:none;margin-left: 590px;"  multiple>
+                                            <div id="hiddencomments"></div>
+                                            
+
+                                        </form>
+
                                         <button class="attach-button" id="attach-button">
-                                          <i class="fas fa-paperclip"></i>
-                                          Attach
+                                            <i class="fas fa-paperclip"></i>
+                                            Attach
                                         </button>
                                         <button class="close-button" onclick="window.history.back()">
                                           <i class="fa fa-close"></i>
@@ -99,18 +108,22 @@
                                 </div>
                             </div>
                             <div class="row"><br>
-                                <input type="file" id="file-input" style="display:none;margin-left: 590px;"  multiple>
+
+                                
+
                                 <div class="col-12"><br>
+
                                     <div id="comment-section"></div>
                                     <a href="#" id="add-comment-link"><i class="fa-solid fa-plus "></i> Add Comment</a>
                                     <div id="comment-form" style="display: none;">
                                         <textarea id="comment-text" rows="2" cols="85"></textarea><br>
-                                        <button id="submit-comment" class="btn btn-primary">Submit</button>
+                                        <button id="submit-comment" type="button" class="btn btn-primary">Add Comment</button>
                                     </div>
                                     
 
                                 </div>
                             </div><br><br>
+
                             <div class="row">
                                 <div class="col-2"></div>
                                 <div id="invoice-section" class="col-9  container border"  style="background-color: rgb(251, 251, 251);border-color: #000000;" >
@@ -265,12 +278,19 @@
     const submitCommentBtn = document.getElementById("submit-comment");
     const commentText = document.getElementById("comment-text");
     const commentSection = document.getElementById("comment-section");
+    const hiddencomment = document.getElementById("hiddencomments")
 
     submitCommentBtn.addEventListener("click", () => {
     const comment = commentText.value;
     const newCommentElement = document.createElement("p");
+    newCommentElement.setAttribute('name', 'comments');
     newCommentElement.textContent = comment;
     commentSection.appendChild(newCommentElement);
+    const newcomment = document.createElement("input")
+    newcomment.setAttribute('type','hidden');
+    newcomment.setAttribute('name','mailcomments');
+    newcomment.value=comment;
+    hiddencomment.appendChild(newcomment);
     commentText.value = "";
     commentForm.style.display = "none";
     addCommentLink.style.display = "block";
@@ -279,53 +299,7 @@
 
 </script>
 
-<script type="text/javascript"
-        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
-</script>
-<script type="text/javascript">
-   (function(){
-      emailjs.init("pf_EAUlowwtpRd_Lk");
-   })();
 
-</script>
-
-<script>
-    function sendEmail() {
-  // Get form values
-      
-  const message = document.getElementById('comment-section').value;
-
-  // Get file attachments
-  const files = document.getElementById('file-input').files;
-
-  // Prepare email parameters
-  const params = {
-    to_email: 'alenantony32@gmail.com',
-    subject: 'Retainer Invoice',
-    message: 'Comments: ' +message,
-    attachments: []
-  };
-
-  // Add file attachments to email parameters
-  for (let i = 0; i < files.length; i++) {
-
-    params.attachments.push({
-      name: files[i].name,
-      type: files[i].type,
-      data: files[i]
-    });
-  }
-
-  // Send email using EmailJS
-  emailjs.send('service_4nai8ti', 'template_y6v7y7b', params)
-        .then(function(response) {
-            console.log('SUCCESS!', response.status, response.text);
-        }, function(error) {
-       console.log('FAILED...', error);
-        });
-    
-    }       
-</script>
 
 <style>
     body {

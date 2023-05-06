@@ -22,7 +22,7 @@
 
 
 
-                    <form  action=""  id="home" method="post">
+                    <form  action=""  id="home" method="post" class="needs-validation" novalidate>
                       {% csrf_token %}
                       <div class="row mb-3">
                         <label  class="col-sm-4 col-form-label">Customer Name*</label>
@@ -60,7 +60,7 @@
                       <div class="row mb-3">
                         <label  class="col-sm-4 col-form-label">Retainer Invoice Date*</label>
                         <div class="col-sm-6">
-                          <input type="date" class="form-control" name="invoicedate" id="dateField">
+                          <input type="date" class="form-control" name="invoicedate" id="dateField" required>
                         </div>
                       </div><br>
 
@@ -77,8 +77,8 @@
                             </thead>
                             <tbody>
                               <tr>
-                                 <td><input type="text" class="form-control" name="description[]" style="width: 350px;"/></td>
-                                <td><input type="number" class="form-control" name="amount[]" style="width: 100px;" /></td>
+                                 <td><input type="text" class="form-control" name="description[]" style="width: 350px;" required/></td>
+                                <td><input type="number" class="form-control" name="amount[]" style="width: 100px;" required /></td>
                                 <td></td>
                               </tr>
                             </tbody> 
@@ -104,7 +104,7 @@
                       <div class="mb-3">
                         <label for="formGroupExampleInput" class="form-label">Customer Notes</label>
                         <div class="form-floating">
-                          <textarea class="form-control col-8" name="customer_notes" placeholder="Enter any notes to be displayed in your transaction" id="floatingTextarea"></textarea>
+                          <textarea class="form-control col-8" name="customer_notes" placeholder="Enter any notes to be displayed in your transaction" id="floatingTextarea" required></textarea>
                           
                         </div>
                       </div><br><br>
@@ -113,7 +113,7 @@
                       <div class="mb-3">
                         <label for="formGroupExampleInput" class="form-label">Terms and Conditions</label>
                         <div class="form-floating">
-                          <textarea class="form-control col-12" name="terms" placeholder="Enter the terms and conditions of your business to be displayed in your transactions " id="floatingTextarea"></textarea>
+                          <textarea class="form-control col-12" name="terms" placeholder="Enter the terms and conditions of your business to be displayed in your transactions " id="floatingTextarea" required></textarea>
                             
                         </div>
                       </div><br><br>
@@ -214,9 +214,28 @@
 
 </script>
 
+<script>
 
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+(() => {
+'use strict'
 
+// Fetch all the forms we want to apply custom Bootstrap validation styles to
+const forms = document.querySelectorAll('.needs-validation')
 
+// Loop over them and prevent submission
+Array.from(forms).forEach(form => {
+  form.addEventListener('submit', event => {
+    if (!form.checkValidity()) {
+      event.preventDefault()
+      event.stopPropagation()
+    }
+
+    form.classList.add('was-validated')
+  }, false)
+})
+})()
+</script>
 
 
 {% endblock %}

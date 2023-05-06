@@ -6,6 +6,7 @@ from .models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.db.models import Q
+from django.core.mail import EmailMessage
 
 
 
@@ -486,5 +487,41 @@ def retainer_update(request,pk):
             pass
         
         return redirect('retainer_invoice')
+    
+def mail_send(request):
+    print('top')
+    if request.method=='POST':
+        comments=request.POST.getlist('mailcomments')
+        print(comments)
+        files=request.FILES.getlist('files')
+        email_to='alenantony32@gmail.com'
+        subject='Retainer Invoice'
+        message1=f'Please keep the attached\nretainer invoice for future use.\n\ncomments:\n'
+        message2='' 
+
+        for comment in comments:
+            message2 += comment + '\n'
+
+        messages=message1+message2    
+
+
+        email=EmailMessage(
+            subject=subject,
+            body=messages,
+            to=[email_to]
+        )
+        print('middle')
+        for file in files:
+            email.attach(file.name, file.read(), file.content_type)
+
+        email.send() 
+        print('bottom')   
+        return redirect('retainer_invoice')
+    print('finished')
+    return redirect('retainer_invoice')
+        
+            
+        
+
 
 

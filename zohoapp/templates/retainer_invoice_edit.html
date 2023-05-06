@@ -22,7 +22,7 @@
 
 
 
-            <form  method="post" action="{% url 'retainer_update' invoice.id %}"   enctype="multipart/form-data">
+            <form  method="post" action="{% url 'retainer_update' invoice.id %}"   enctype="multipart/form-data"  class="needs-validation" novalidate>
               {% csrf_token %}
               <div class="row mb-3">
                 <label  class="col-sm-4 col-form-label">Customer Name*</label>
@@ -183,6 +183,30 @@
       }
   });
 </script>
+
+<script>
+
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+(() => {
+'use strict'
+
+// Fetch all the forms we want to apply custom Bootstrap validation styles to
+const forms = document.querySelectorAll('.needs-validation')
+
+// Loop over them and prevent submission
+Array.from(forms).forEach(form => {
+  form.addEventListener('submit', event => {
+    if (!form.checkValidity()) {
+      event.preventDefault()
+      event.stopPropagation()
+    }
+
+    form.classList.add('was-validated')
+  }, false)
+})
+})()
+</script>
+
 
 
 
