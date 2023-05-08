@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib import messages
 from django.utils.text import capfirst
 from django.contrib.auth.models import User,auth
@@ -376,7 +376,7 @@ def add_invoice(request):
 
 @login_required(login_url='login')
 def create_invoice_draft(request):
-    print('top')
+    
     if request.method=='POST':
         select=request.POST['select']
         customer_name=Customer.objects.get(id=select)
@@ -386,12 +386,12 @@ def create_invoice_draft(request):
         total_amount=request.POST.get('total')
         customer_notes=request.POST['customer_notes']
         terms_and_conditions=request.POST['terms']
-        print('middle')
+    
         retainer_invoice=RetainerInvoice(
-        customer_name=customer_name,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions)
-        print('save')
+            customer_name=customer_name,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions)
+    
         retainer_invoice.save()
-        print('saved')
+        
 
         description = request.POST.getlist('description[]')
         amount =request.POST.getlist('amount[]')
@@ -404,6 +404,9 @@ def create_invoice_draft(request):
             pass
 
         return redirect('retainer_invoice')
+
+            
+        
 
          
 @login_required(login_url='login')
@@ -418,11 +421,9 @@ def create_invoice_send(request):
         customer_notes=request.POST['customer_notes']
         terms_and_conditions=request.POST['terms']
         retainer_invoice=RetainerInvoice(
-        customer_name=customer_name,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions)
+        customer_name=customer_name,retainer_invoice_number=retainer_invoice_number,refrences=references,retainer_invoice_date=retainer_invoice_date,total_amount=total_amount,customer_notes=customer_notes,terms_and_conditions=terms_and_conditions,is_draft=False)
         retainer_invoice.save()
-        retainer_invoice.is_sent=True
-        retainer_invoice.is_draft=False
-        retainer_invoice.save()
+
         description = request.POST.getlist('description[]')
         amount = request.POST.getlist('amount[]')
         if len(description)==len(amount):
@@ -432,7 +433,7 @@ def create_invoice_send(request):
                 created = Retaineritems.objects.get_or_create(description=ele[0],amount=ele[1], retainer=retainer_invoice)
         else:
             pass
-        return redirect('retainer_invoice')
+        return redirect('invoice_view',pk=retainer_invoice.id)
 
 
 
@@ -454,8 +455,8 @@ def retainer_template(request,pk):
 def retainer_edit_page(request,pk):
     invoice=RetainerInvoice.objects.get(id=pk)
     customer=Customer.objects.all()
-    item=Retaineritems.objects.filter(retainer=pk)
-    context={'invoice':invoice, 'customer':customer,'item':item}
+    items=Retaineritems.objects.filter(retainer=pk)
+    context={'invoice':invoice, 'customer':customer,'items':items}
     return render(request,'retainer_invoice_edit.html', context)
 
 
@@ -475,21 +476,30 @@ def retainer_update(request,pk):
     
         retainer_invoice.save()
         
-        description=request.POST.getlist('description[]')
-        amount=request.POST.getlist('amount[]')
-        retainer_item=Retaineritems.objects.filter(retainer=pk)
-        if len(description)==len(amount):
-            mapped = zip(description,amount)
-            mapped=list(mapped)
-            for ele in mapped:
-                updated=Retaineritems.objects.filter(retainer=pk).update(description=ele[0],amount=ele[1])
-        else:
-            pass
-        
+        descriptions=request.POST.getlist('description[]')
+        amounts=request.POST.getlist('amount[]')
+        # if len(descriptions)==len(amounts):
+        #     mapped = zip(descriptions,amounts)
+        #     mapped=list(mapped)
+        #     for ele in mapped:
+        #         created=Retaineritems.objects.filter(retainer=retainer_invoice).update(description=ele[0])
+        # else:
+        #     pass
+        for i in range(len(descriptions)):
+            description=descriptions[i]
+            amount=amounts[i]
+            obj,created=Retaineritems.objects.update_or_create(retainer=retainer_invoice,description=description,defaults={'amount':amount})
+            obj.save()
+
+
+
+
+
         return redirect('retainer_invoice')
-    
-def mail_send(request):
-    print('top')
+
+@login_required(login_url='login')
+def mail_send(request,pk):
+
     if request.method=='POST':
         comments=request.POST.getlist('mailcomments')
         print(comments)
@@ -510,14 +520,34 @@ def mail_send(request):
             body=messages,
             to=[email_to]
         )
-        print('middle')
+        
         for file in files:
             email.attach(file.name, file.read(), file.content_type)
 
         email.send() 
-        print('bottom')   
+        print('bottom') 
+        retainer_invoice=RetainerInvoice.objects.get(id=pk)
+        retainer_invoice.is_draft=False
+        retainer_invoice.is_sent=True
+        retainer_invoice.save()  
         return redirect('retainer_invoice')
-    print('finished')
+    
+    return redirect('retainer_invoice')
+
+@login_required(login_url='login')
+def retaineritem_delete(request,pk):
+    print('delete')
+    item = get_object_or_404(Retaineritems, id=pk)
+    item.delete()
+    print('deleted')
+    return redirect('retainer_edit_page' ,pk=item.retainer.id)
+    
+@login_required(login_url='login')
+def retainer_delete(request,pk):
+    items=Retaineritems.objects.filter(retainer=pk)
+    items.delete()
+    retainer=RetainerInvoice.objects.get(id=pk)
+    retainer.delete()
     return redirect('retainer_invoice')
         
             

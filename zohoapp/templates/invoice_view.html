@@ -83,7 +83,7 @@
                                           Print
                                         </button>
 
-                                        <form method="post" action="{% url 'mail_send' %}" enctype="multipart/form-data">
+                                        <form method="post" action="{% url 'mail_send' invoice.id %}" enctype="multipart/form-data">
                                             {% csrf_token %}
                                             <button class="mail-button">
                                             <i class="fas fa-envelope"></i>
@@ -99,10 +99,13 @@
                                             <i class="fas fa-paperclip"></i>
                                             Attach
                                         </button>
-                                        <button class="close-button" onclick="window.history.back()">
-                                          <i class="fa fa-close"></i>
-                                          Close
-                                        </button>
+                                        <a href="{% url 'retainer_delete' invoice.id %}">
+                                            <button class="close-button">
+                                            <i class="fa fa-close"></i>
+                                            Close
+                                          </button>
+                                        </a>
+
                                     </div>
                                       
                                 </div>
@@ -217,7 +220,7 @@
     function convertHTMLtoPDF() {
         const { jsPDF } = window.jspdf;
 
-        var doc = new jsPDF('l', 'mm', [650, 630]);
+        var doc = new jsPDF('l', 'mm', [630, 630]);
         var pdfjs = document.querySelector('#invoice-section');
 
         doc.html(pdfjs, {
@@ -225,7 +228,7 @@
                 doc.save("retainer-invoice.pdf");
             },
             x: 12,
-            y: 30
+            y: 12
         });               
     }           
 </script> 

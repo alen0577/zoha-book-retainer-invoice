@@ -20,6 +20,7 @@ urlpatterns = [
     path('cleer/<int:id>',views.cleer,name='cleer'),
     path('add_unit',views.add_unit,name='add_unit'),
     path('sales',views.add_sales,name='add_sales'),
+    
     path('add_customer/',views.add_customer,name='add_customer'),
     path('retainer_invoices/',views.retainer_invoice,name='retainer_invoice'),
     path('add_invoice/',views.add_invoice,name='add_invoice'),
@@ -29,6 +30,8 @@ urlpatterns = [
     path('retainer_template/<int:pk>',views.retainer_template,name='retainer_template'),
     path('retainer_invoice_edit/<int:pk>',views.retainer_edit_page,name='retainer_edit_page'), 
     path('retainer_invoice_update/<int:pk>',views.retainer_update,name='retainer_update'),
-    path('send_mail/',views.mail_send,name='mail_send'),
+    path('send_mail/<int:pk>',views.mail_send,name='mail_send'),
+    path('retaineritem_delete/<int:pk>',views.retaineritem_delete,name='retaineritem_delete'),
+    path('retainer_delete/<int:pk>',views.retainer_delete,name='retainer_delete')
     
 ]

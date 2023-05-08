@@ -22,17 +22,18 @@
 
 
 
-                    <form  action=""  id="home" method="post" class="needs-validation" novalidate>
+                    <form  action=""  id="home" method="post"  class="needs-validation" novalidate>
                       {% csrf_token %}
                       <div class="row mb-3">
+                        
                         <label  class="col-sm-4 col-form-label">Customer Name*</label>
                         
                         <div class="col-sm-8">
                           
-                          <select class="form-control form-select" name="select" onchange="if (this.value === 'new') window.location.href = '/add_customer/';">
+                          <select class="form-control form-select" id="my-select"  name="select" onchange="if (this.value === 'new') window.location.href = '/add_customer/';" required>
                             
                             
-                            <option value="">Select  Customer</option>
+                            <option hidden disabled selected value="">Select  Customer</option>
                             {% for i in customer %}
                             <option value="{{i.id}}">{{i.customer_name}}</option>
                             {% endfor %}         
@@ -42,13 +43,15 @@
                           </select>
                           
 
+                          
+
                         </div>
                         
                       </div><br>
                       <div class="row mb-3">
                         <label  class="col-sm-4 col-form-label">Retainer Invoice Number*</label>
                         <div class="col-sm-6">
-                          <input type="text" class="form-control" name="retainer-invoice-number" id="invoice-number" required>
+                          <input type="text" class="form-control" name="retainer-invoice-number" id="invoice-number" value="RET-00001" required>
                         </div>
                       </div><br>
                       <div class="row mb-3">
@@ -78,7 +81,7 @@
                             <tbody>
                               <tr>
                                  <td><input type="text" class="form-control" name="description[]" style="width: 350px;" required/></td>
-                                <td><input type="number" class="form-control" name="amount[]" style="width: 100px;" required /></td>
+                                <td><input type="number" class="form-control" name="amount[]" style="width: 100px;" step="0.01" required /></td>
                                 <td></td>
                               </tr>
                             </tbody> 
@@ -92,10 +95,9 @@
                             </tfoot>
                           </table>
 
-                          <input type="text" id="hidden-total-amount" name="total" value="">
-                          <br/><br/>
+                          <input type="hidden" id="hidden-total-amount" name="total" value="">
+                        
                             
-
                         </div>
                         <div class="col-2"></div>
 
@@ -151,7 +153,7 @@
   // Add Another Line
   var addAnotherLine = document.getElementById('add-another-line');
   var tableBody = document.querySelector('#retainer-table tbody');
-  var newRow = '<tr><td><input type="text" class="form-control" name="description[]" /></td><td><input type="number" class="form-control" name="amount[]" style="width: 100px;" /></td><td><a href="#" class="delete-row" style="color:red;">-X-</a></td></tr>';
+  var newRow = '<tr><td><input type="text" class="form-control" name="description[]" /></td><td><input type="number" class="form-control" name="amount[]" step="0.01" style="width: 100px;" /></td><td><a href="#" class="delete-row" style="color:red;">-X-</a></td></tr>';
   addAnotherLine.addEventListener('click', function(e) {
       e.preventDefault();
       tableBody.insertAdjacentHTML('beforeend', newRow);
@@ -186,8 +188,14 @@
 
 
 <script>
-  const totalAmount = document.getElementById("total-amount").textContent;
-  document.getElementById("hidden-total-amount").value = totalAmount;
+
+  const totalAmountElement = document.getElementById('total-amount');
+  const inputField = document.getElementById('hidden-total-amount');
+
+  totalAmountElement.addEventListener('DOMSubtreeModified', () => {
+    inputField.value = totalAmountElement.innerText.replace('$', '');
+  });
+
 </script>
 
 <script>
@@ -196,7 +204,7 @@
 
     var frm=document.getElementById("home");
     
-    let customMsg = "Do you want to submit?";
+    let customMsg = "Do you want to save as draft?";
   
     if (confirm(customMsg)) {
 
@@ -236,6 +244,9 @@ Array.from(forms).forEach(form => {
 })
 })()
 </script>
+
+
+
 
 
 {% endblock %}

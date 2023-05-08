@@ -45,6 +45,7 @@
                                         <th>RETAINER INVOICE NUMBER</th>
                                         <th>CUSTOMER NAME</th>
                                         <th>AMOUNT</th>
+                                        <th>STATUS</th>
             
                                       
                                     </tr>
@@ -56,6 +57,13 @@
                                         <td class="align-top"><a href="{% url 'invoice_view' i.id %}">{{i.retainer_invoice_number}}</a></td>
                                         <td class="align-top">{{i.customer_name.customer_name}}</td>
                                         <td class="align-top">₹{{i.total_amount}}</td>
+                                        <td class="align-top">
+                                            {% if i.is_sent %}
+                                            Send
+                                            {% else %}
+                                            Draft
+                                            {% endif %}
+                                        </td>
     
     
     
