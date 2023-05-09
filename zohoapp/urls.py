@@ -32,6 +32,20 @@ urlpatterns = [
     path('retainer_invoice_update/<int:pk>',views.retainer_update,name='retainer_update'),
     path('send_mail/<int:pk>',views.mail_send,name='mail_send'),
     path('retaineritem_delete/<int:pk>',views.retaineritem_delete,name='retaineritem_delete'),
-    path('retainer_delete/<int:pk>',views.retainer_delete,name='retainer_delete')
+    path('retainer_delete/<int:pk>',views.retainer_delete,name='retainer_delete'),
+
+    path('vendor/',views.vendor,name='vendor'),
+    path('add_vendor/',views.add_vendor,name='add_vendor'),
+    path('sample/',views.sample,name="sample"),
+    path('view_vendor_list/',views.view_vendor_list,name='view_vendor_list'),
+    path('view_vendor_details/<int:pk>',views.view_vendor_details,name='view_vendor_details'),
+    path('add_comment/<int:pk>',views.add_comment,name='add_comment'),
+    path('sendmail/<int:pk>',views.sendmail,name='sendmail'),
+    path('edit_vendor/<int:pk>',views.edit_vendor,name='edit_vendor'),
+    path('edit_vendor_details/<int:pk>',views.edit_vendor_details,name='edit_vendor_details'),
+    path('upload_document/<int:pk>',views.upload_document,name='upload_document'),
+    path('download_doc/<int:pk>',views.download_doc,name='download_doc'),
+    path('cancel_vendor/',views.cancel_vendor,name='cancel_vendor'),
+    path('delete_vendor/<int:pk>',views.delete_vendor,name='delete_vendor'),
     
 ]

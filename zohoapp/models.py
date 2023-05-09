@@ -72,6 +72,7 @@ class History(models.Model):
     message=models.CharField(max_length=255)
     p=models.ForeignKey(AddItem,on_delete=models.CASCADE)
 
+# models for retainer invoice
 
 class Customer(models.Model):
     customer_name=models.CharField(max_length=255)
@@ -92,4 +93,46 @@ class Retaineritems(models.Model):
     retainer=models.ForeignKey(RetainerInvoice, on_delete=models.CASCADE)
     description=models.TextField()
     amount=models.CharField(max_length=100)
-        
+
+# models for vendor        
+class vendor_table(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
+    salutation=models.CharField(max_length=25)
+    first_name=models.CharField(max_length=50)
+    last_name=models.CharField(max_length=50)
+    company_name=models.CharField(max_length=150)
+    vendor_display_name=models.CharField(max_length=150)
+    vendor_email=models.CharField(max_length=250)
+    vendor_wphone=models.CharField(max_length=50)
+    vendor_mphone=models.CharField(max_length=50)
+    skype_number=models.CharField(max_length=50)
+    designation=models.CharField(max_length=50)
+    department=models.CharField(max_length=50)
+    website=models.CharField(max_length=250)
+    gst_treatment=models.CharField(max_length=100)
+    gst_number=models.CharField(max_length=50,null=True)
+    pan_number=models.CharField(max_length=50,null=True)
+    source_supply=models.CharField(max_length=100)
+    currency=models.CharField(max_length=50)
+    opening_bal=models.CharField(max_length=100)
+    payment_terms=models.CharField(max_length=100)
+
+class comments_table(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
+    vendor=models.ForeignKey(vendor_table,on_delete=models.CASCADE,null=True)
+    comment=models.TextField(max_length=500)
+
+class mail_table(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
+    vendor=models.ForeignKey(vendor_table,on_delete=models.CASCADE,null=True)
+    mail_from=models.TextField(max_length=300)
+    mail_to=models.TextField(max_length=300)
+    subject=models.TextField(max_length=250)
+    content=models.TextField(max_length=900)
+    mail_date=models.DateTimeField(auto_now_add=True)
+
+class doc_upload_table(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE,null=True)
+    vendor=models.ForeignKey(vendor_table,on_delete=models.CASCADE,null=True)
+    title=models.TextField(max_length=200)
+    document=models.FileField(upload_to='doc/')        

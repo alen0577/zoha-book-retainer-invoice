@@ -1,8 +1,11 @@
 from django.shortcuts import get_object_or_404, render,redirect
+from django.http import HttpResponse
 from django.contrib import messages
 from django.utils.text import capfirst
 from django.contrib.auth.models import User,auth
 from .models import *
+from django.core.mail import send_mail
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.db.models import Q
@@ -549,6 +552,187 @@ def retainer_delete(request,pk):
     retainer=RetainerInvoice.objects.get(id=pk)
     retainer.delete()
     return redirect('retainer_invoice')
+
+
+@login_required(login_url='login')
+def vendor(request):
+    return render(request,'create_vendor.html')
+
+
+
+@login_required(login_url='login')
+def add_vendor(request):
+    if request.method=="POST":
+        vendor_data=vendor_table()
+        vendor_data.salutation=request.POST['salutation']
+        vendor_data.first_name=request.POST['first_name']
+        vendor_data.last_name=request.POST['last_name']
+        vendor_data.company_name=request.POST['company_name']
+        vendor_data.vendor_display_name=request.POST['v_display_name']
+        vendor_data.vendor_email=request.POST['vendor_email']
+        vendor_data.vendor_wphone=request.POST['w_phone']
+        vendor_data.vendor_mphone=request.POST['m_phone']
+        vendor_data.skype_number=request.POST['skype_number']
+        vendor_data.designation=request.POST['designation']
+        vendor_data.department=request.POST['department']
+        vendor_data.website=request.POST['website']
+        vendor_data.gst_treatment=request.POST['gst']
+
+        x=request.POST['gst']
+        if x=="Unregistered Business-not Registered under GST":
+            vendor_data.pan_number=request.POST['pan_number']
+            vendor_data.gst_number="null"
+        else:
+            vendor_data.gst_number=request.POST['gst_number']
+            vendor_data.pan_number=request.POST['pan_number']
+
+        vendor_data.source_supply=request.POST['source_supply']
+        vendor_data.currency=request.POST['currency']
+        vendor_data.opening_bal=request.POST['opening_bal']
+        vendor_data.payment_terms=request.POST['payment_terms']
+
+        user_id=request.user.id
+        udata=User.objects.get(id=user_id)
+        vendor_data.user=udata
+
+        
+
+
+
+        
+        # vendor_data=vendor(user=udata,salutation=salutation,first_name=first_name,last_name=last_name,
+        #     company_name=company_name,vendor_display_name=vendor_display_name,vendor_email=vendor_email,
+        #     vendor_wphone=vendor_wphone,vendor_mphone=vendor_mphone,skype_number=skype_number,designation=designation,
+        #     department=department,website=website,gst_treatment=gst_treatment,source_supply=source_supply,
+        #     gst_number=gst_number,pan_number=pan_number,currency=currency,opening_bal=opening_bal,
+        #     payment_terms=payment_terms)
+        
+        
+        
+        
+        vendor_data.save()
+        return redirect('base')
+        
+
+def sample(request):
+    print("hello")
+    return redirect('base')
+
+def view_vendor_list(request):
+    user_id=request.user.id
+    udata=User.objects.get(id=user_id)
+    data=vendor_table.objects.filter(user=udata)
+    return render(request,'vendor_list.html',{'data':data})
+
+def view_vendor_details(request,pk):
+    user_id=request.user.id
+    udata=User.objects.get(id=user_id)
+    vdata1=vendor_table.objects.filter(user=udata)
+    vdata2=vendor_table.objects.get(id=pk)
+    mdata=mail_table.objects.filter(vendor=vdata2)
+    ddata=doc_upload_table.objects.filter(user=udata,vendor=vdata2)
+
+    return render(request,'vendor_details.html',{'vdata':vdata1,'vdata2':vdata2,'mdata':mdata,'ddata':ddata})
+
+def add_comment(request,pk):
+    if request.method=='POST':
+        comment=request.POST['comment']
+        user_id=request.user.id
+        udata=User.objects.get(id=user_id)
+        vdata2=vendor_table.objects.get(id=pk)
+        comments=comments_table(user=udata,vendor=vdata2,comment=comment)
+        comments.save()
+        return redirect("view_vendor_list")
+
+def sendmail(request,pk):
+    if request.method=='POST':
+        user_id=request.user.id
+        udata=User.objects.get(id=user_id)
+        vdata2=vendor_table.objects.get(id=pk)
+        mail_from=settings.EMAIL_HOST_USER
+        mail_to=request.POST['email']
+        subject=request.POST['subject']
+        content=request.POST['content']
+        mail_data=mail_table(user=udata,vendor=vdata2,mail_from=mail_from,mail_to=mail_to,subject=subject,content=content)
+        mail_data.save()
+
+        subject = request.POST['subject']
+        message = request.POST['content']
+        recipient = request.POST['email']     #  recipient =request.POST["inputTagName"]
+        send_mail(subject, message, settings.EMAIL_HOST_USER, [recipient])
+
+        return redirect("view_vendor_list")
+
+
+
+def edit_vendor(request,pk):
+    vdata=vendor_table.objects.get(id=pk)
+    return render(request,'edit_vendor.html',{'vdata':vdata})
+
+def edit_vendor_details(request,pk):
+    if request.method=='POST':
+        vdata=vendor_table.objects.get(id=pk)
+        vdata.salutation=request.POST['salutation']
+        vdata.first_name=request.POST['first_name']
+        vdata.last_name=request.POST['last_name']
+        vdata.company_name=request.POST['company_name']
+        vdata.vendor_display_name=request.POST['v_display_name']
+        vdata.vendor_email=request.POST['vendor_email']
+        vdata.vendor_wphone=request.POST['w_phone']
+        vdata.vendor_mphone=request.POST['m_phone']
+        vdata.skype_number=request.POST['skype_number']
+        vdata.designation=request.POST['designation']
+        vdata.department=request.POST['department']
+        vdata.website=request.POST['website']
+        vdata.gst_treatment=request.POST['gst']
+        if vdata.gst_treatment=="Unregistered Business-not Registered under GST":
+            vdata.pan_number=request.POST['pan_number']
+            vdata.gst_number="null"
+        else:
+            vdata.gst_number=request.POST['gst_number']
+            vdata.pan_number=request.POST['pan_number']
+
+        vdata.source_supply=request.POST['source_supply']
+        vdata.currency=request.POST['currency']
+        vdata.opening_bal=request.POST['opening_bal']
+        vdata.payment_terms=request.POST['payment_terms']
+
+        vdata.save()
+        return redirect("view_vendor_list")
+
+def upload_document(request,pk):
+    if request.method=='POST':
+        user_id=request.user.id
+        udata=User.objects.get(id=user_id)
+        vdata=vendor_table.objects.get(id=pk)
+        title=request.POST['title']
+        document=request.FILES.get('file')
+        doc_data=doc_upload_table(user=udata,vendor=vdata,title=title,document=document)
+        doc_data.save()
+        return redirect("view_vendor_list")
+
+def download_doc(request,pk):
+    document=get_object_or_404(doc_upload_table,id=pk)
+    response=HttpResponse(document.document,content_type='application/pdf')
+    response['Content-Disposition']=f'attachment; filename="{document.document.name}"'
+    return response
+
+def cancel_vendor(request):
+    return redirect("view_vendor_list")
+
+def delete_vendor(request,pk):
+    if comments_table.objects.filter(vendor=pk).exists():
+        user2=comments_table.objects.filter(vendor=pk)
+        user2.delete()
+    if mail_table.objects.filter(vendor=pk).exists():
+        user3=mail_table.objects.filter(vendor=pk)
+        user3.delete()
+    if doc_upload_table.objects.filter(vendor=pk).exists():
+        user4=doc_upload_table.objects.filter(vendor=pk)
+        user4.delete()
+    user1=vendor_table.objects.get(id=pk)
+    user1.delete()
+    return redirect("view_vendor_list")
         
             
         

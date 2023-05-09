@@ -11407,25 +11407,7 @@ transition: transform 0.4s ,top 0.4s;
         
       </header>
 
-      <!-- <section>
-        <div class="row fixed-top ml-4 " style="top: 7rem;">
-         <div class="col-md-2" style="border-right: 1px solid white;height: 100vh;">
-           <h6 class="mb-4"><a class="active  " href="{% url 'base' %}"><i class="fa fa-fw fa-home mr-2 "></i> Home</a> </h6>
-           <h6 class="mb-4"><a class="active  " href="{% url 'itemview' %}"><i class="fa-solid fa-sitemap mr-3 "></i>Items</a> <a class="ml-5 active" href="{% url 'additem' %}"><i class="fa-solid fa-plus "></i></a></h6>
-           <h6 class="mb-4"><a class="active  " href="#"><i class="fa-solid fa-building-columns mr-3"></i>Banking</a> <a class="ml-5 active" href="{% url 'additem' %}"><i class="fa-solid fa-plus "></i></a></h6>
-           <h6 class="mb-4"><a class="active  " href="#"><i class="fa-solid fa-cart-shopping mr-3"></i>Sales</a></h6>
-           <h6 class="mb-4"><a class="active  " href="#"><i class="fa-solid fa-basket-shopping mr-3"></i>Purchases</a></h6>
-           <h6 class="mb-4"><a class="active  " href="#"><i class="fa-solid fa-business-time mr-3 "></i>Time Tracking</a></h6>
-            <h6 class="mb-4"><a class="active  " href="#"><i class="fa-solid fa-user mr-3 "></i>Accountant</a></h6>
-            <h6 class="mb-4"><a class="active  " href="#"><i class="fa-solid fa-calendar-week mr-3"></i>Reports</a></h6>
-            <h6 class="mb-4"><a class="active  " href="#"><i class="fa-solid fa-file mr-3"></i>Documents</a></h6>
-             <h6 class="mb43"><a class="active  " href="#"><i class="fa-solid fa-money-bill mr-3 "></i>Payroll</a></h6>
-         </div>
-        
-        
-        </div>
-       
-     </section> -->
+      
      <section>
       <div class="row fixed-top ml-4 " style="top: 7rem;">
         <div class="col-md-2" style="border-right: 1px solid white;height: 100vh;">
@@ -11447,7 +11429,22 @@ transition: transform 0.4s ,top 0.4s;
               </div>
             </h6>
           </div>
-          <h6 class="mb-4"><a class="active" href="#"><i class="fa-solid fa-basket-shopping mr-3"></i>Purchases</a></h6>
+          <!-- <h6 class="mb-4"><a class="active" href="#"><i class="fa-solid fa-basket-shopping mr-3"></i>Purchases</a></h6> -->
+          <div class="dropdown">
+            <h6 class="mb-4">
+              <a class="active dropdown-toggle" href=""  data-toggle="dropdown"  >
+                <i class="fa-solid fa-basket-shopping mr-3"></i>Purchases
+              </a>
+              <div class="dropdown-menu" >
+                
+            
+               <a class="ml-4 text-dark" href="{% url 'view_vendor_list' %}">Vendor</a> <a class="ml-5 " href="{% url 'vendor' %}"><i class="fa-solid fa-plus text-dark "></i></a>
+
+                
+              </div>
+            </h6>
+          </div>
+          
           <h6 class="mb-4"><a class="active" href="#"><i class="fa-solid fa-business-time mr-3"></i>Time Tracking</a></h6>
           <h6 class="mb-4"><a class="active" href="#"><i class="fa-solid fa-user mr-3"></i>Accountant</a></h6>
           <h6 class="mb-4"><a class="active" href="#"><i class="fa-solid fa-calendar-week mr-3"></i>Reports</a></h6>
