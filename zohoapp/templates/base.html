@@ -11422,7 +11422,8 @@ transition: transform 0.4s ,top 0.4s;
               <a class="nav-link active" aria-current="page" href="{% url 'base' %}"><i class="fa fa-fw fa-home mr-2"></i>Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="{% url 'itemview' %}"><i class="fa-solid fa-sitemap mr-3"></i>Items</a><a class="ml-10" href="{% url 'additem' %}"><i class="fa-solid fa-plus"></i></a>
+              <a class="nav-link active" href="{% url 'itemview' %}" style="display: inline-block;"><i class="fa-solid fa-sitemap mr-3"></i>Items</a>
+              <a class="nav-link active" href="{% url 'additem' %}" style="display: inline-block; margin-left: 3px;"><i class="fa-solid fa-plus"></i></a>
             </li>
             <li class="nav-item">
               <a class="nav-link active" href="#"><i class="fa-solid fa-building-columns mr-3"></i>Banking</a>
@@ -11437,8 +11438,11 @@ transition: transform 0.4s ,top 0.4s;
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#">Customer</a></li>
                 <li><a class="dropdown-item" href="#">Bills</a></li>
-                <li><a class="dropdown-item" href="{% url 'retainer_invoice' %}">Retainer Invoices</a>
-                  <a class="ml-5 " href="{% url 'add_invoice' %}"><i class="fa-solid fa-plus text-dark "></i></a>
+                <li>
+                  <div class="dropdown-item">
+                    <a class="d-inline-block text-dark" href="{% url 'retainer_invoice' %}">Retainer Invoices</a>
+                    <a class="ml-3 d-inline-block" href="{% url 'add_invoice' %}"><i class="fa-solid fa-plus text-dark "></i></a>
+                  </div>                                    
                 </li>
               </ul>
 
@@ -11451,9 +11455,12 @@ transition: transform 0.4s ,top 0.4s;
               </a>
               
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{% url 'view_vendor_list' %}">Vendor</a>
-
-                </li>                
+                <li>
+                  <div class="dropdown-item">
+                    <a class="d-inline-block text-dark" href="{% url 'view_vendor_list' %}">Vendor</a>
+                    <a class="ml-3 d-inline-block" href="{% url 'vendor' %}"><i class="fa-solid fa-plus text-dark "></i></a>
+                  </div>                                    
+                </li>               
               </ul>
             </li>
 
