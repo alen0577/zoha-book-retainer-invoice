@@ -80,12 +80,21 @@ def logout(request):
 @login_required(login_url='login')
 def base(request):
    
-    
+    usr=request.user
+    user=company_details.objects.get(user=usr)
     company = company_details.objects.get(user = request.user)
     context = {
-                'company' : company
+                'company' : company,
+                'user':user
             }
     return render(request,'loginhome.html',context)
+
+def base2(request):
+    usr=request.user
+    user=company_details.objects.get(user=usr)
+    context={'user':user}
+
+    return render(request,'base.html',context)
 
 @login_required(login_url='login')
 def view_profile(request):
